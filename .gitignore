@@ -17,4 +17,3 @@ build/
 # Файлы сборки
 bundle.js
 bundle.js.map
-webpack.config.js
