@@ -1,5 +1,3 @@
-'use strict';
-
 (function () {
   const CARD_NUMBER = 3;
   const menuContainer = document.querySelector(`.main__control`);
