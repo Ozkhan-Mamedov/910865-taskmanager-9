@@ -1,3 +1,9 @@
+/**
+ * @return {{
+ * description: String, dueDate: number,
+ * repeatingDays: {Tu: boolean, Mo: boolean, Su: boolean, Th: boolean, Fr: boolean, We: boolean, Sa: boolean},
+ * isArchive: boolean, color: string, isFavourite: boolean, tags: [string]}}
+ */
 export const getTask = () => ({
   description: [
     `Изучить теорию`,

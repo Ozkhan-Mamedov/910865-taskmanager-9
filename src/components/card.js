@@ -10,7 +10,7 @@
     'Sa': boolean,
     'Su': boolean,
   } } repeatingDays
- * @param {object} tags
+ * @param {[string]} tags
  * @param {string} color
  * @param {boolean} isFavourite
  * @param {boolean} isArchive
