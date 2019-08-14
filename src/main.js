@@ -1,11 +1,12 @@
-import {getMenuComponent} from './components/menu.js';
-import {getSearchComponent} from './components/search.js';
-import {getFilterComponent} from './components/filter.js';
-import {getCardBoardComponent} from './components/card-board.js';
-import {getSortComponent} from './components/sort.js';
-import {getCardComponent} from './components/card.js';
-import {getCardEditComponent} from './components/card-edit.js';
-import {getButtonComponent} from './components/load-more-button.js';
+import {getMenuComponent} from './components/menu';
+import {getSearchComponent} from './components/search';
+import {getFilterComponent} from './components/filter';
+import {getCardBoardComponent} from './components/card-board';
+import {getSortComponent} from './components/sort';
+import {getCardComponent} from './components/card';
+import {getCardEditComponent} from './components/card-edit';
+import {getButtonComponent} from './components/load-more-button';
+import {getTask} from "./data";
 
 const mainContainer = document.querySelector(`.main`);
 const menuContainer = mainContainer.querySelector(`.main__control`);
@@ -29,8 +30,15 @@ const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 
 renderComponent(boardContainer, getSortComponent(), `afterbegin`);
+
+const tasks = Array(3);
+
+for (let i = 0; i < CARD_NUMBER; i++) {
+  tasks[i] = getTask();
+}
+
 renderComponent(cardsContainer, getCardEditComponent(), `beforeend`);
 for (let i = 0; i < CARD_NUMBER; i++) {
-  renderComponent(cardsContainer, getCardComponent(), `beforeend`);
+  renderComponent(cardsContainer, getCardComponent(tasks[i]), `beforeend`);
 }
 renderComponent(boardContainer, getButtonComponent(), `beforeend`);

@@ -1,4 +1,19 @@
 /**
+ * @param {string} description
+ * @param {number} dueDate
+ * @param { {
+    'Mo': boolean,
+    'Tu': boolean,
+    'We': boolean,
+    'Th': boolean,
+    'Fr': boolean,
+    'Sa': boolean,
+    'Su': boolean,
+  } } repeatingDays
+ * @param {object} tags
+ * @param {string} color
+ * @param {boolean} isFavourite
+ * @param {boolean} isArchive
  * @return {string}
  */
 export const getCardComponent = ({description, dueDate, repeatingDays, tags, color, isFavourite, isArchive}) => {
