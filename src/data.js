@@ -125,7 +125,7 @@ const getQuantityNumber = (name, tasks) => {
   return result;
 };
 
-export const tasks = Array(3);
+export const tasks = Array(7);
 export const filters = Array(filtertitles.length);
 
 for (let i = 0; i < tasks.length; i++) {

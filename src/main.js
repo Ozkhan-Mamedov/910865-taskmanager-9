@@ -26,7 +26,7 @@ renderComponent(mainContainer, getSearchComponent(), `beforeend`);
 renderComponent(mainContainer, getFilterComponent(filters), `beforeend`);
 renderComponent(mainContainer, getCardBoardComponent(), `beforeend`);
 
-const CARD_NUMBER = 3;
+const CARD_NUMBER = 7;
 const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 
