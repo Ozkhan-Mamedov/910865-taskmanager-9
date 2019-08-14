@@ -12,11 +12,11 @@
   } } repeatingDays
  * @param {[string]} tags
  * @param {string} color
- * @param {boolean} isFavourite
+ * @param {boolean} isFavorite
  * @param {boolean} isArchive
  * @return {string}
  */
-export const getCardComponent = ({description, dueDate, repeatingDays, tags, color, isFavourite, isArchive}) => {
+export const getCardComponent = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
   return `
     <article class="card card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``}">
       <div class="card__form">
@@ -28,7 +28,7 @@ export const getCardComponent = ({description, dueDate, repeatingDays, tags, col
             <button type="button" class="card__btn card__btn--archive ${isArchive ? `card__btn--disabled` : ``}">
               archive
             </button>
-            <button type="button" class="card__btn card__btn--favorites ${isFavourite ? `card__btn--disabled` : ``}">
+            <button type="button" class="card__btn card__btn--favorites ${isFavorite ? `card__btn--disabled` : ``}">
               favorites
             </button>
           </div>

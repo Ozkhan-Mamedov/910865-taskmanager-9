@@ -7,6 +7,7 @@ import {getCardComponent} from './components/card';
 import {getCardEditComponent} from './components/card-edit';
 import {getButtonComponent} from './components/load-more-button';
 import {getTask} from "./data";
+import {tasks} from "./data";
 
 const mainContainer = document.querySelector(`.main`);
 const menuContainer = mainContainer.querySelector(`.main__control`);
@@ -30,12 +31,6 @@ const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 
 renderComponent(boardContainer, getSortComponent(), `afterbegin`);
-
-const tasks = Array(3);
-
-for (let i = 0; i < CARD_NUMBER; i++) {
-  tasks[i] = getTask();
-}
 
 renderComponent(cardsContainer, getCardEditComponent(), `beforeend`);
 for (let i = 0; i < CARD_NUMBER; i++) {
