@@ -18,7 +18,7 @@
  */
 export const getCardComponent = ({description, dueDate, repeatingDays, tags, color, isFavourite, isArchive}) => {
   return `
-    <article class="card card--${color} ${Object.keys(repeatingDays).some(day => repeatingDays[day]) ? `card--repeat` : ``}">
+    <article class="card card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``}">
       <div class="card__form">
         <div class="card__inner">
           <div class="card__control">
