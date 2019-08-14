@@ -6,8 +6,8 @@ import {getSortComponent} from './components/sort';
 import {getCardComponent} from './components/card';
 import {getCardEditComponent} from './components/card-edit';
 import {getButtonComponent} from './components/load-more-button';
-import {getTask} from "./data";
 import {tasks} from "./data";
+import {filters} from "./data";
 
 const mainContainer = document.querySelector(`.main`);
 const menuContainer = mainContainer.querySelector(`.main__control`);
@@ -23,7 +23,7 @@ const renderComponent = (container, markup, place) => {
 
 renderComponent(menuContainer, getMenuComponent(), `beforeend`);
 renderComponent(mainContainer, getSearchComponent(), `beforeend`);
-renderComponent(mainContainer, getFilterComponent(), `beforeend`);
+renderComponent(mainContainer, getFilterComponent(filters), `beforeend`);
 renderComponent(mainContainer, getCardBoardComponent(), `beforeend`);
 
 const CARD_NUMBER = 3;
