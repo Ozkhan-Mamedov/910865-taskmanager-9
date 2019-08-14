@@ -25,10 +25,10 @@ export const getCardComponent = ({description, dueDate, repeatingDays, tags, col
             <button type="button" class="card__btn card__btn--edit">
               edit
             </button>
-            <button type="button" class="card__btn card__btn--archive ${isArchive ? `card__btn--disabled` : ``}">
+            <button type="button" class="card__btn card__btn--archive ${isArchive ? `` : `card__btn--disabled`}">
               archive
             </button>
-            <button type="button" class="card__btn card__btn--favorites ${isFavorite ? `card__btn--disabled` : ``}">
+            <button type="button" class="card__btn card__btn--favorites ${isFavorite ? `` : `card__btn--disabled`}">
               favorites
             </button>
           </div>

@@ -38,16 +38,18 @@ export const getTask = () => ({
   isArchive: Boolean(Math.round(Math.random())),
 });
 
+const filtertitles = [
+  `ALL`,
+  `OVERDUE`,
+  `TODAY`,
+  `FAVORITES`,
+  `REPEATING`,
+  `TAGS`,
+  `ARCHIVE`,
+];
+
 const getFilter = () => ({
-  title: [
-    `ALL`,
-    `OVERDUE`,
-    `TODAY`,
-    `FAVORITES`,
-    `REPEATING`,
-    `TAGS`,
-    `ARCHIVE`,
-  ][Math.floor(Math.random() * 7)],
+  title: filtertitles,
   count: getQuantityNumber,
 });
 
@@ -124,7 +126,17 @@ const getQuantityNumber = (name, tasks) => {
 };
 
 export const tasks = Array(3);
+export const filters = Array(filtertitles.length);
 
 for (let i = 0; i < tasks.length; i++) {
   tasks[i] = getTask();
+}
+
+for (let i = 0; i < filters.length; i++) {
+  let filterName = filtertitles[i];
+
+  filters[i] = {
+    title: getFilter().title[i],
+    count: getFilter().count(`${filterName}`, tasks),
+  };
 }
