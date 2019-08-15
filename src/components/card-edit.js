@@ -4,6 +4,10 @@ import {tasks} from "../data";
 const hashtags = tasks[0];
 export let hashtagcomponents = [];
 
+/**
+ * @param {string} hashtagName
+ * @return {string}
+ */
 const getHashtagComponent = (hashtagName) => {
   return `
   <span class="card__hashtag-inner">
