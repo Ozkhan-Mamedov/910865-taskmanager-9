@@ -4,7 +4,7 @@ import {getFilterComponent} from './components/filter';
 import {getCardBoardComponent} from './components/card-board';
 import {getSortComponent} from './components/sort';
 import {getCardComponent} from './components/card';
-import {getCardEditComponent} from './components/card-edit';
+import {getCardEditComponent, hashtagcomponents} from './components/card-edit';
 import {getButtonComponent} from './components/load-more-button';
 import {tasks} from "./data";
 import {filters} from "./data";
@@ -75,17 +75,20 @@ renderComponent(cardsContainer, getCardEditComponent(cardEditTemplate), `beforee
 const repeatInput = document.querySelector(`.card__repeat-status`);
 const repeatingdays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
 const colorinputs = document.querySelector(`.card__colors-wrap`).querySelectorAll(`input`);
+const hashtagEditContainer = document.querySelector(`.card__hashtag-list`);
 
 colorinputs.forEach((it) => {
   if (it.value === cardEditColor) {
     it.checked = `checked`;
   }
 });
-
 repeatingdays.forEach((it) => {
   if (it.checked === true) {
     repeatInput.innerHTML = `yes`;
   }
+});
+hashtagcomponents.forEach((it) => {
+  renderComponent(hashtagEditContainer, it, `beforeend`);
 });
 for (let i = 0; i < CARD_NUMBER; i++) {
   renderComponent(cardsContainer, getCardComponent(tasks[i]), `beforeend`);

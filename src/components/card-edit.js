@@ -1,4 +1,27 @@
 import {months} from "./card";
+import {tasks} from "../data";
+
+const hashtags = tasks[0];
+export let hashtagcomponents = [];
+
+const getHashtagComponent = (hashtagName) => {
+  return `
+  <span class="card__hashtag-inner">
+    <input
+      type="hidden"
+      name="hashtag"
+      value="repeat"
+      class="card__hashtag-hidden-input"
+    />
+    <p class="card__hashtag-name">
+      #${hashtagName}
+    </p>
+    <button type="button" class="card__hashtag-delete">
+      delete
+    </button>
+  </span>
+  `;
+};
 
 /**
  * @param {string} description
@@ -12,13 +35,12 @@ import {months} from "./card";
     'Sa': boolean,
     'Su': boolean,
   } } repeatingDays
- * @param {[string]} tags
  * @param {string} color
  * @param {boolean} isFavorite
  * @param {boolean} isArchive
  * @return {string}
  */
-export const getCardEditComponent = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
+export const getCardEditComponent = ({description, dueDate, repeatingDays, color, isFavorite, isArchive}) => {
   return `
     <article class="card card--edit card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``} card--repeat">
       <form class="card__form" method="get">
@@ -159,50 +181,6 @@ export const getCardEditComponent = ({description, dueDate, repeatingDays, tags,
 
               <div class="card__hashtag">
                 <div class="card__hashtag-list">
-                  <span class="card__hashtag-inner">
-                    <input
-                      type="hidden"
-                      name="hashtag"
-                      value="repeat"
-                      class="card__hashtag-hidden-input"
-                    />
-                    <p class="card__hashtag-name">
-                      #repeat
-                    </p>
-                    <button type="button" class="card__hashtag-delete">
-                      delete
-                    </button>
-                  </span>
-
-                  <span class="card__hashtag-inner">
-                    <input
-                      type="hidden"
-                      name="hashtag"
-                      value="repeat"
-                      class="card__hashtag-hidden-input"
-                    />
-                    <p class="card__hashtag-name">
-                      #cinema
-                    </p>
-                    <button type="button" class="card__hashtag-delete">
-                      delete
-                    </button>
-                  </span>
-
-                  <span class="card__hashtag-inner">
-                    <input
-                      type="hidden"
-                      name="hashtag"
-                      value="repeat"
-                      class="card__hashtag-hidden-input"
-                    />
-                    <p class="card__hashtag-name">
-                      #entertaiment
-                    </p>
-                    <button type="button" class="card__hashtag-delete">
-                      delete
-                    </button>
-                  </span>
                 </div>
 
                 <label>
@@ -293,3 +271,8 @@ export const getCardEditComponent = ({description, dueDate, repeatingDays, tags,
     </article>
   `;
 };
+
+hashtags.tags.forEach((it) => {
+  hashtagcomponents.push(getHashtagComponent(it));
+});
+
