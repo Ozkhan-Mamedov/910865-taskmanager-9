@@ -21,6 +21,10 @@ const renderComponent = (container, markup, place) => {
   container.insertAdjacentHTML(place, markup);
 };
 
+/**
+ * @param {[object]} arr массив карточек
+ * @return {number}
+ */
 const getMaxTaskNumber = (arr) => {
   let result;
 

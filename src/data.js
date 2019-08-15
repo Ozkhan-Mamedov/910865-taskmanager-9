@@ -1,8 +1,12 @@
 /**
  * @return { {
- * description: String, dueDate: number,
+ * description: string,
+ * dueDate: number,
  * repeatingDays: {Tu: boolean, Mo: boolean, Su: boolean, Th: boolean, Fr: boolean, We: boolean, Sa: boolean},
- * isArchive: boolean, color: string, isFavourite: boolean, tags: [string] } }
+ * isArchive: boolean,
+ * color: string,
+ * isFavourite: boolean,
+ * tags: [string] } }
  */
 export const getTask = () => ({
   description: [
@@ -48,11 +52,19 @@ const filtertitles = [
   `ARCHIVE`,
 ];
 
+/**
+ * @return {{count: function, title: [string]}}
+ */
 const getFilter = () => ({
   title: filtertitles,
   count: getQuantityNumber,
 });
 
+/**
+ * @param {string} name
+ * @param {[object]} tasks
+ * @return {number}
+ */
 const getQuantityNumber = (name, tasks) => {
   let result = 0;
 

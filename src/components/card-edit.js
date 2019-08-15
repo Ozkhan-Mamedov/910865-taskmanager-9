@@ -1,9 +1,23 @@
 import {months} from "./card";
 
 /**
+ * @param {string} description
+ * @param {number} dueDate
+ * @param { {
+    'Mo': boolean,
+    'Tu': boolean,
+    'We': boolean,
+    'Th': boolean,
+    'Fr': boolean,
+    'Sa': boolean,
+    'Su': boolean,
+  } } repeatingDays
+ * @param {[string]} tags
+ * @param {string} color
+ * @param {boolean} isFavorite
+ * @param {boolean} isArchive
  * @return {string}
  */
-// repeatingDays tags должен рандомно заполняться
 export const getCardEditComponent = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
   return `
     <article class="card card--edit card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``} card--repeat">
