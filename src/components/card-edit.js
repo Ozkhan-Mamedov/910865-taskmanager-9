@@ -71,7 +71,7 @@ export const getCardEditComponent = ({description, dueDate, repeatingDays, tags,
                 </fieldset>
 
                 <button class="card__repeat-toggle" type="button">
-                  repeat:<span class="card__repeat-status">yes</span>
+                  repeat:<span class="card__repeat-status">no</span>
                 </button>
 
                 <fieldset class="card__repeat-days">

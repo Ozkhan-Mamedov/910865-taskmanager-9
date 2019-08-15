@@ -66,11 +66,27 @@ const CARD_NUMBER = 7;
 const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 const cardEditTemplate = tasks[0];
+const cardEditColor = cardEditTemplate.color;
 let currenttasks = tasks.slice();
 
 renderComponent(boardContainer, getSortComponent(), `afterbegin`);
-
 renderComponent(cardsContainer, getCardEditComponent(cardEditTemplate), `beforeend`);
+
+const repeatInput = document.querySelector(`.card__repeat-status`);
+const repeatingdays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
+const colorinputs = document.querySelector(`.card__colors-wrap`).querySelectorAll(`input`);
+
+colorinputs.forEach((it) => {
+  if (it.value === cardEditColor) {
+    it.checked = `checked`;
+  }
+});
+
+repeatingdays.forEach((it) => {
+  if (it.checked === true) {
+    repeatInput.innerHTML = `yes`;
+  }
+});
 for (let i = 0; i < CARD_NUMBER; i++) {
   renderComponent(cardsContainer, getCardComponent(tasks[i]), `beforeend`);
   currenttasks.shift();
