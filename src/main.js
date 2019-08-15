@@ -21,6 +21,38 @@ const renderComponent = (container, markup, place) => {
   container.insertAdjacentHTML(place, markup);
 };
 
+const getMaxTaskNumber = (arr) => {
+  let result;
+
+  if (arr.length > 8) {
+    result = 8;
+  } else {
+    result = arr.length;
+  }
+
+  return result;
+};
+
+const showMoreCards = () => {
+  if (currenttasks.length !== 0) {
+    let maxTasksLeft = getMaxTaskNumber(currenttasks);
+
+    for (let i = 0; i < maxTasksLeft; i++) {
+      renderComponent(cardsContainer, getCardComponent(currenttasks[i]), `beforeend`);
+    }
+
+    currenttasks.slice(0, maxTasksLeft);
+
+    for (let i = 0; i < maxTasksLeft; i++) {
+      currenttasks.shift();
+    }
+
+    if (currenttasks.length === 0) {
+      document.querySelector(`.load-more`).remove();
+    }
+  }
+};
+
 renderComponent(menuContainer, getMenuComponent(), `beforeend`);
 renderComponent(mainContainer, getSearchComponent(), `beforeend`);
 renderComponent(mainContainer, getFilterComponent(filters), `beforeend`);
@@ -29,11 +61,19 @@ renderComponent(mainContainer, getCardBoardComponent(), `beforeend`);
 const CARD_NUMBER = 7;
 const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
+let currenttasks = tasks.slice();
 
 renderComponent(boardContainer, getSortComponent(), `afterbegin`);
 
 renderComponent(cardsContainer, getCardEditComponent(), `beforeend`);
 for (let i = 0; i < CARD_NUMBER; i++) {
   renderComponent(cardsContainer, getCardComponent(tasks[i]), `beforeend`);
+  currenttasks.shift();
 }
-renderComponent(boardContainer, getButtonComponent(), `beforeend`);
+if (currenttasks.length !== 0) {
+  renderComponent(boardContainer, getButtonComponent(), `beforeend`);
+}
+
+const loadMoreButton = document.querySelector(`.load-more`);
+
+loadMoreButton.addEventListener(`click`, showMoreCards);
