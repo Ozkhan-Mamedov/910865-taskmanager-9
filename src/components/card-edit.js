@@ -1,18 +1,21 @@
+import {months} from "./card";
+
 /**
  * @return {string}
  */
-export const getCardEditComponent = () => {
+// repeatingDays tags должен рандомно заполняться
+export const getCardEditComponent = ({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) => {
   return `
-    <article class="card card--edit card--yellow card--repeat">
+    <article class="card card--edit card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``} card--repeat">
       <form class="card__form" method="get">
         <div class="card__inner">
           <div class="card__control">
-            <button type="button" class="card__btn card__btn--archive">
+            <button type="button" class="card__btn card__btn--archive ${isArchive ? `` : `card__btn--disabled`}">
               archive
             </button>
             <button
               type="button"
-              class="card__btn card__btn--favorites card__btn--disabled"
+              class="card__btn card__btn--favorites ${isFavorite ? `` : `card__btn--disabled`}"
             >
               favorites
             </button>
@@ -30,7 +33,7 @@ export const getCardEditComponent = () => {
                 class="card__text"
                 placeholder="Start typing your text here..."
                 name="text"
-              >Here is a card with filled data</textarea>
+              >${description}</textarea>
             </label>
           </div>
 
@@ -48,7 +51,7 @@ export const getCardEditComponent = () => {
                       type="text"
                       placeholder=""
                       name="date"
-                      value="23 September 11:15 PM"
+                      value="${new Date(dueDate).getDate()} ${months[new Date(dueDate).getMonth()]} ${new Date(dueDate).toTimeString().slice(0, 5)} PM"
                     />
                   </label>
                 </fieldset>
@@ -64,7 +67,8 @@ export const getCardEditComponent = () => {
                       type="checkbox"
                       id="repeat-mo-4"
                       name="repeat"
-                      value="mo"
+                      value="mo" 
+                      ${repeatingDays[`Mo`] ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-mo-4"
                       >mo</label
@@ -75,7 +79,7 @@ export const getCardEditComponent = () => {
                       id="repeat-tu-4"
                       name="repeat"
                       value="tu"
-                      checked
+                      ${repeatingDays[`Tu`] ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-tu-4"
                       >tu</label
@@ -86,6 +90,7 @@ export const getCardEditComponent = () => {
                       id="repeat-we-4"
                       name="repeat"
                       value="we"
+                      ${repeatingDays[`We`] ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-we-4"
                       >we</label
@@ -96,6 +101,7 @@ export const getCardEditComponent = () => {
                       id="repeat-th-4"
                       name="repeat"
                       value="th"
+                      ${repeatingDays[`Th`] ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-th-4"
                       >th</label
@@ -106,7 +112,7 @@ export const getCardEditComponent = () => {
                       id="repeat-fr-4"
                       name="repeat"
                       value="fr"
-                      checked
+                      ${repeatingDays[`Fr`] ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-fr-4"
                       >fr</label
@@ -117,6 +123,7 @@ export const getCardEditComponent = () => {
                       name="repeat"
                       value="sa"
                       id="repeat-sa-4"
+                      ${repeatingDays[`Sa`] ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-sa-4"
                       >sa</label
@@ -127,7 +134,7 @@ export const getCardEditComponent = () => {
                       id="repeat-su-4"
                       name="repeat"
                       value="su"
-                      checked
+                      ${repeatingDays[`Su`] ? `checked` : ``}
                     />
                     <label class="card__repeat-day" for="repeat-su-4"
                       >su</label

@@ -1,3 +1,18 @@
+export const months = [
+  `Januray`,
+  `February`,
+  `March`,
+  `April`,
+  `May`,
+  `July`,
+  `June`,
+  `August`,
+  `September`,
+  `October`,
+  `November`,
+  `December`
+];
+
 /**
  * @param {string} description
  * @param {number} dueDate
@@ -48,8 +63,8 @@ export const getCardComponent = ({description, dueDate, repeatingDays, tags, col
               <div class="card__dates">
                 <div class="card__date-deadline">
                   <p class="card__input-deadline-wrap">
-                    <span class="card__date">${new Date(dueDate).toDateString()}</span>
-                    <span class="card__time">${new Date(dueDate).toTimeString().slice(0, 5)}</span>
+                    <span class="card__date">${new Date(dueDate).getDate()} ${months[new Date(dueDate).getMonth()]}</span>
+                    <span class="card__time">${new Date(dueDate).toTimeString().slice(0, 5)} PM</span>
                   </p>
                 </div>
               </div>

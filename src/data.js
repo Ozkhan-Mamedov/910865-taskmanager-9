@@ -10,7 +10,7 @@ export const getTask = () => ({
     `Сделать домашку`,
     `Пройти интенсив на соточку`,
   ][Math.floor(Math.random() * 3)],
-  dueDate: Date.now() + 1 + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
+  dueDate: Date.now() + Math.floor(Math.random() * (1000000000 - (-1000000000) + 1)) + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
   repeatingDays: {
     'Mo': false,
     'Tu': false,

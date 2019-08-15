@@ -61,11 +61,12 @@ renderComponent(mainContainer, getCardBoardComponent(), `beforeend`);
 const CARD_NUMBER = 7;
 const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
+const cardEditTemplate = tasks[0];
 let currenttasks = tasks.slice();
 
 renderComponent(boardContainer, getSortComponent(), `afterbegin`);
 
-renderComponent(cardsContainer, getCardEditComponent(), `beforeend`);
+renderComponent(cardsContainer, getCardEditComponent(cardEditTemplate), `beforeend`);
 for (let i = 0; i < CARD_NUMBER; i++) {
   renderComponent(cardsContainer, getCardComponent(tasks[i]), `beforeend`);
   currenttasks.shift();
