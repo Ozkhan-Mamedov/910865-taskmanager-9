@@ -1,7 +1,5 @@
-// import {tasks} from "./data";
-
 export const TASKS_NUMBER = 20;
-export const DEFAULT_CARD_RENDER_NUMBER = 7;
+export const DEFAULT_CARD_RENDER_NUMBER = 8;
 export const DAYS_IN_WEEK = 7;
 export const HOURS_IN_DAY = 24;
 export const MINUTES_IN_HOUR = 60;

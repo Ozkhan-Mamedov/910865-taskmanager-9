@@ -7,15 +7,6 @@ const taskDescriptions = [
   `Сделать домашку`,
   `Пройти интенсив на соточку`,
 ];
-const taskRepeatingDays = {
-  'Mo': false,
-  'Tu': false,
-  'We': Boolean(Math.round(Math.random())),
-  'Th': false,
-  'Fr': false,
-  'Sa': false,
-  'Su': false,
-};
 const taskTags = new Set([
   `homework`,
   `theory`,
@@ -45,7 +36,15 @@ export const getTask = () => ({
   description: taskDescriptions[getRandomNumber(0, taskDescriptions.length - 1)],
   dueDate: Date.now() + getRandomNumber(MIN_TIME_RANGE, MAX_TIME_RANGE)
     + getRandomNumber(0, DAYS_IN_WEEK - 1) * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MSECONDS_IN_SECOND,
-  repeatingDays: taskRepeatingDays,
+  repeatingDays: {
+    'Mo': false,
+    'Tu': false,
+    'We': Boolean(Math.round(Math.random())),
+    'Th': false,
+    'Fr': false,
+    'Sa': false,
+    'Su': false,
+  },
   tags: taskTags,
   color: taskColors[getRandomNumber(0, taskColors.length - 1)],
   isFavorite: Boolean(Math.round(Math.random())),
