@@ -2,7 +2,7 @@ import {months} from "./card";
 import {tasks} from "../data";
 
 const hashtags = tasks[0];
-export let hashtagcomponents = [];
+export let hashtagComponents = [];
 
 /**
  * @param {string} hashtagName
@@ -46,7 +46,7 @@ const getHashtagComponent = (hashtagName) => {
  */
 export const getCardEditComponent = ({description, dueDate, repeatingDays, color, isFavorite, isArchive}) => {
   return `
-    <article class="card card--edit card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``} card--repeat">
+    <article class="card card--edit card--${color} ${Object.keys(repeatingDays).some((day) => repeatingDays[day]) ? `card--repeat` : ``}">
       <form class="card__form" method="get">
         <div class="card__inner">
           <div class="card__control">
@@ -277,6 +277,6 @@ export const getCardEditComponent = ({description, dueDate, repeatingDays, color
 };
 
 hashtags.tags.forEach((it) => {
-  hashtagcomponents.push(getHashtagComponent(it));
+  hashtagComponents.push(getHashtagComponent(it));
 });
 

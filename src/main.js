@@ -4,10 +4,11 @@ import {getFilterComponent} from './components/filter';
 import {getCardBoardComponent} from './components/card-board';
 import {getSortComponent} from './components/sort';
 import {getCardComponent} from './components/card';
-import {getCardEditComponent, hashtagcomponents} from './components/card-edit';
+import {getCardEditComponent, hashtagComponents} from './components/card-edit';
 import {getButtonComponent} from './components/load-more-button';
 import {tasks} from "./data";
 import {filters} from "./data";
+import {DEFAULT_CARD_RENDER_NUMBER} from "./constants";
 
 const mainContainer = document.querySelector(`.main`);
 const menuContainer = mainContainer.querySelector(`.main__control`);
@@ -38,20 +39,20 @@ const getMaxTaskNumber = (arr) => {
 };
 
 const showMoreCards = () => {
-  if (currenttasks.length !== 0) {
-    let maxTasksLeft = getMaxTaskNumber(currenttasks);
+  if (currentTasks.length !== 0) {
+    let maxTasksLeft = getMaxTaskNumber(currentTasks);
 
     for (let i = 0; i < maxTasksLeft; i++) {
-      renderComponent(cardsContainer, getCardComponent(currenttasks[i]), `beforeend`);
+      renderComponent(cardsContainer, getCardComponent(currentTasks[i]), `beforeend`);
     }
 
-    currenttasks.slice(0, maxTasksLeft);
+    currentTasks.slice(0, maxTasksLeft);
 
     for (let i = 0; i < maxTasksLeft; i++) {
-      currenttasks.shift();
+      currentTasks.shift();
     }
 
-    if (currenttasks.length === 0) {
+    if (currentTasks.length === 0) {
       document.querySelector(`.load-more`).remove();
     }
   }
@@ -62,39 +63,38 @@ renderComponent(mainContainer, getSearchComponent(), `beforeend`);
 renderComponent(mainContainer, getFilterComponent(filters), `beforeend`);
 renderComponent(mainContainer, getCardBoardComponent(), `beforeend`);
 
-const CARD_NUMBER = 7;
 const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 const cardEditTemplate = tasks[0];
 const cardEditColor = cardEditTemplate.color;
-let currenttasks = tasks.slice();
+let currentTasks = tasks.slice();
 
 renderComponent(boardContainer, getSortComponent(), `afterbegin`);
 renderComponent(cardsContainer, getCardEditComponent(cardEditTemplate), `beforeend`);
 
 const repeatInput = document.querySelector(`.card__repeat-status`);
-const repeatingdays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
-const colorinputs = document.querySelector(`.card__colors-wrap`).querySelectorAll(`input`);
+const repeatingDays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
+const colorInputs = document.querySelector(`.card__colors-wrap`).querySelectorAll(`input`);
 const hashtagEditContainer = document.querySelector(`.card__hashtag-list`);
 
-colorinputs.forEach((it) => {
+colorInputs.forEach((it) => {
   if (it.value === cardEditColor) {
     it.checked = `checked`;
   }
 });
-repeatingdays.forEach((it) => {
+repeatingDays.forEach((it) => {
   if (it.checked === true) {
     repeatInput.innerHTML = `yes`;
   }
 });
-hashtagcomponents.forEach((it) => {
+hashtagComponents.forEach((it) => {
   renderComponent(hashtagEditContainer, it, `beforeend`);
 });
-for (let i = 0; i < CARD_NUMBER; i++) {
+for (let i = 0; i < DEFAULT_CARD_RENDER_NUMBER; i++) {
   renderComponent(cardsContainer, getCardComponent(tasks[i]), `beforeend`);
-  currenttasks.shift();
+  currentTasks.shift();
 }
-if (currenttasks.length !== 0) {
+if (currentTasks.length !== 0) {
   renderComponent(boardContainer, getButtonComponent(), `beforeend`);
 }
 

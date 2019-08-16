@@ -1,3 +1,36 @@
+import {getRandomNumber} from "./utils";
+import {DAYS_IN_WEEK, HOURS_IN_DAY, MINUTES_IN_HOUR, SECONDS_IN_MINUTE, MSECONDS_IN_SECOND,
+  MIN_TIME_RANGE, MAX_TIME_RANGE, TASKS_NUMBER} from "./constants";
+
+const taskDescriptions = [
+  `Изучить теорию`,
+  `Сделать домашку`,
+  `Пройти интенсив на соточку`,
+];
+const taskRepeatingDays = {
+  'Mo': false,
+  'Tu': false,
+  'We': Boolean(Math.round(Math.random())),
+  'Th': false,
+  'Fr': false,
+  'Sa': false,
+  'Su': false,
+};
+const taskTags = new Set([
+  `homework`,
+  `theory`,
+  `practice`,
+  `intensive`,
+  `keks`,
+]);
+const taskColors = [
+  `black`,
+  `yellow`,
+  `blue`,
+  `green`,
+  `pink`,
+];
+
 /**
  * @return { {
  * description: string,
@@ -9,40 +42,17 @@
  * tags: [string] } }
  */
 export const getTask = () => ({
-  description: [
-    `Изучить теорию`,
-    `Сделать домашку`,
-    `Пройти интенсив на соточку`,
-  ][Math.floor(Math.random() * 3)],
-  dueDate: Date.now() + Math.floor(Math.random() * (1000000000 - (-1000000000) + 1)) + Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
-  repeatingDays: {
-    'Mo': false,
-    'Tu': false,
-    'We': Boolean(Math.round(Math.random())),
-    'Th': false,
-    'Fr': false,
-    'Sa': false,
-    'Su': false,
-  },
-  tags: new Set([
-    `homework`,
-    `theory`,
-    `practice`,
-    `intensive`,
-    `keks`,
-  ]),
-  color: [
-    `black`,
-    `yellow`,
-    `blue`,
-    `green`,
-    `pink`,
-  ][Math.floor(Math.random() * 5)],
+  description: taskDescriptions[getRandomNumber(0, taskDescriptions.length - 1)],
+  dueDate: Date.now() + getRandomNumber(MIN_TIME_RANGE, MAX_TIME_RANGE)
+    + getRandomNumber(0, DAYS_IN_WEEK - 1) * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MSECONDS_IN_SECOND,
+  repeatingDays: taskRepeatingDays,
+  tags: taskTags,
+  color: taskColors[getRandomNumber(0, taskColors.length - 1)],
   isFavorite: Boolean(Math.round(Math.random())),
   isArchive: Boolean(Math.round(Math.random())),
 });
 
-const filtertitles = [
+const filterTitles = [
   `ALL`,
   `OVERDUE`,
   `TODAY`,
@@ -56,7 +66,7 @@ const filtertitles = [
  * @return {{count: function, title: [string]}}
  */
 const getFilter = () => ({
-  title: filtertitles,
+  title: filterTitles,
   count: getQuantityNumber,
 });
 
@@ -137,15 +147,15 @@ const getQuantityNumber = (name, tasks) => {
   return result;
 };
 
-export const tasks = Array(15);
-export const filters = Array(filtertitles.length);
+export const tasks = Array(TASKS_NUMBER);
+export const filters = Array(filterTitles.length);
 
-for (let i = 0; i < tasks.length; i++) {
+for (let i = 0; i < TASKS_NUMBER; i++) {
   tasks[i] = getTask();
 }
 
 for (let i = 0; i < filters.length; i++) {
-  let filterName = filtertitles[i];
+  let filterName = filterTitles[i];
 
   filters[i] = {
     title: getFilter().title[i],
