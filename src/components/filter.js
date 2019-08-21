@@ -1,3 +1,5 @@
+import {createElement} from "../utils";
+
 class Filter {
   /**
    * @param { [ { title : string,
@@ -5,7 +7,20 @@ class Filter {
    */
   constructor(filters) {
     this._filters = filters;
+    this._element = null;
   }
+
+  /**
+   * @return {null | ChildNode}
+   */
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
   /**
    * @return {string}
    */

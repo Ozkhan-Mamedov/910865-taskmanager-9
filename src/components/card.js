@@ -1,3 +1,5 @@
+import {createElement} from "../utils";
+
 export const months = [
   `Januray`,
   `February`,
@@ -39,6 +41,18 @@ class Task {
     this._color = color;
     this._isFavorite = isFavorite;
     this._isArchive = isArchive;
+    this._element = null;
+  }
+
+  /**
+   * @return {null | ChildNode}
+   */
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
   }
 
   /**

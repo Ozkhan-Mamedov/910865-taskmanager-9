@@ -1,5 +1,6 @@
 import {months} from "./card";
 import {tasks} from "../data";
+import {createElement} from "../utils";
 
 const hashtags = tasks[0];
 export let hashtagComponents = [];
@@ -55,6 +56,18 @@ class CardEdit {
     this._color = color;
     this._isFavorite = isFavorite;
     this._isArchive = isArchive;
+    this._element = null;
+  }
+
+  /**
+   * @return {null | ChildNode}
+   */
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
   }
 
   /**
