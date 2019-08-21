@@ -9,18 +9,10 @@ import {getButtonComponent} from './components/load-more-button';
 import {tasks} from "./data";
 import {filters} from "./data";
 import {DEFAULT_CARD_RENDER_NUMBER} from "./constants";
+import {renderComponent} from "./utils";
 
 const mainContainer = document.querySelector(`.main`);
 const menuContainer = mainContainer.querySelector(`.main__control`);
-
-/**
- * @param {Element} container
- * @param {string} markup
- * @param {InsertPosition} place
- */
-const renderComponent = (container, markup, place) => {
-  container.insertAdjacentHTML(place, markup);
-};
 
 /**
  * @param {[object]} arr массив карточек
