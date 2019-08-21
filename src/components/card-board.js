@@ -27,3 +27,7 @@ class TaskBoard {
     `;
   }
 }
+
+export {
+  TaskBoard
+};

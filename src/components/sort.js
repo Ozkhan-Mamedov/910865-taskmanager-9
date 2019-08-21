@@ -29,3 +29,7 @@ class Sort {
     `;
   }
 }
+
+export {
+  Sort
+};

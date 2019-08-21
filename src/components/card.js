@@ -1,6 +1,6 @@
 import {createElement} from "../utils";
 
-export const months = [
+const months = [
   `Januray`,
   `February`,
   `March`,
@@ -115,3 +115,8 @@ class Task {
     `;
   }
 }
+
+export {
+  Task,
+  months
+};

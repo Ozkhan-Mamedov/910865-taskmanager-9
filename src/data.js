@@ -32,7 +32,7 @@ const taskColors = [
  * isFavourite: boolean,
  * tags: [string] } }
  */
-export const getTask = () => ({
+const getTask = () => ({
   description: taskDescriptions[getRandomNumber(0, taskDescriptions.length - 1)],
   dueDate: Date.now() + getRandomNumber(MIN_TIME_RANGE, MAX_TIME_RANGE)
     + getRandomNumber(0, DAYS_IN_WEEK - 1) * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MSECONDS_IN_SECOND,
@@ -146,8 +146,8 @@ const getQuantityNumber = (name, tasks) => {
   return result;
 };
 
-export const tasks = Array(TASKS_NUMBER);
-export const filters = Array(filterTitles.length);
+const tasks = Array(TASKS_NUMBER);
+const filters = Array(filterTitles.length);
 
 for (let i = 0; i < TASKS_NUMBER; i++) {
   tasks[i] = getTask();
@@ -161,3 +161,9 @@ for (let i = 0; i < filters.length; i++) {
     count: getFilter().count(`${filterName}`, tasks),
   };
 }
+
+export {
+  getTask,
+  tasks,
+  filters
+};

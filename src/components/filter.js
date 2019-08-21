@@ -46,3 +46,7 @@ class Filter {
     `;
   }
 }
+
+export {
+  Filter
+};

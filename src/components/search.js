@@ -28,3 +28,7 @@ class Search {
     `;
   }
 }
+
+export {
+  Search
+};

@@ -3,7 +3,7 @@ import {tasks} from "../data";
 import {createElement} from "../utils";
 
 const hashtags = tasks[0];
-export let hashtagComponents = [];
+let hashtagComponents = [];
 
 /**
  * @param {string} hashtagName
@@ -305,3 +305,8 @@ class CardEdit {
     `;
   }
 }
+
+export {
+  hashtagComponents,
+  CardEdit
+};

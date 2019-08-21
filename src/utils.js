@@ -3,7 +3,7 @@
  * @param {number} max
  * @return {number}
  */
-export const getRandomNumber = (min, max) => {
+const getRandomNumber = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
@@ -11,7 +11,7 @@ export const getRandomNumber = (min, max) => {
  * @param {string} template
  * @return {ChildNode}
  */
-export const createElement = (template) => {
+const createElement = (template) => {
   const newElement = document.createElement(`div`);
 
   newElement.innerHTML = template;
@@ -24,16 +24,22 @@ export const createElement = (template) => {
  * @param {string} markup
  * @param {InsertPosition} place
  */
-export const renderComponent = (container, markup, place) => {
+const renderComponent = (container, markup, place) => {
   container.insertAdjacentHTML(place, markup);
 };
 
 /**
  * @param {Element} element
  */
-export const unrender = (element) => {
+const unrenderComponent = (element) => {
   if (element) {
     element.remove();
   }
 };
 
+export {
+  getRandomNumber,
+  createElement,
+  renderComponent,
+  unrenderComponent
+};
