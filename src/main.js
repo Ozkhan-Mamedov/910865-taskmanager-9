@@ -4,7 +4,7 @@ import {Filter} from './components/filter';
 import {TaskBoard} from './components/card-board';
 import {Sort} from './components/sort';
 import {Task} from './components/card';
-import {TaskEdit, hashtagComponents} from './components/card-edit';
+import {TaskEdit} from './components/card-edit';
 import {LoadMoreButton} from './components/load-more-button';
 import {tasks, filters} from "./data";
 import {DEFAULT_CARD_RENDER_NUMBER} from "./constants";
@@ -27,28 +27,6 @@ const getMaxTaskNumber = (arr) => {
   }
 
   return result;
-};
-
-const setUpCardEditComponent = () => {
-  const repeatInput = document.querySelector(`.card__repeat-status`);
-  const repeatingDays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
-  const colorInputs = document.querySelector(`.card__colors-wrap`).querySelectorAll(`input`);
-  const hashtagEditContainer = document.querySelector(`.card__hashtag-list`);
-
-  colorInputs.forEach((it) => {
-    if (it.value === cardEditColor) {
-      it.checked = `checked`;
-    }
-  });
-  repeatingDays.forEach((it) => {
-    if (it.checked === true) {
-      repeatInput.innerHTML = `yes`;
-    }
-  });
-  hashtagComponents.forEach((it) => {
-    renderComponent(hashtagEditContainer, it, `beforeend`);
-  });
-  currentTasks.shift();
 };
 
 const onLoadMoreClick = () => {
@@ -77,15 +55,50 @@ renderComponent(mainContainer, new TaskBoard().getElement(), `beforeend`);
 const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 let currentTasks = tasks.slice();
-const cardEditTemplate = currentTasks[0];
-const cardEditColor = cardEditTemplate.color;
 
 renderComponent(boardContainer, new Sort().getElement(), `afterbegin`);
-renderComponent(cardsContainer, new TaskEdit(cardEditTemplate).getElement(), `beforeend`);
-setUpCardEditComponent();
-for (let i = 1; i < DEFAULT_CARD_RENDER_NUMBER; i++) {
-  renderComponent(cardsContainer, new Task(tasks[i]).getElement(), `beforeend`);
+
+for (let i = 0; i < DEFAULT_CARD_RENDER_NUMBER; i++) {
+  let cardComponent = new Task(tasks[i]).getElement();
+  let cardEditComponent = new TaskEdit(tasks[i]).getElement();
+
+  /**
+   * @param {KeyboardEvent} keyEvt
+   */
+  const onEscKeyDown = (keyEvt) => {
+    if (keyEvt.key === `Escape` || keyEvt.key === `Esc`) {
+      cardsContainer.replaceChild(cardComponent, cardEditComponent);
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  renderComponent(cardsContainer, cardComponent, `beforeend`);
   currentTasks.shift();
+  cardComponent.querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+    cardsContainer.replaceChild(cardEditComponent, cardComponent);
+
+    const repeatInput = document.querySelector(`.card__repeat-status`);
+    const repeatingDays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
+    const colorInputs = document.querySelector(`.card__colors-wrap`).querySelectorAll(`input`);
+
+    colorInputs.forEach((it) => {
+      if (it.value === tasks[i].color) {
+        it.checked = `checked`;
+      }
+    });
+    repeatingDays.forEach((it) => {
+      if (it.checked === true) {
+        repeatInput.innerHTML = `yes`;
+      }
+    });
+
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+  cardEditComponent.querySelector(`.card__save`).addEventListener(`click`, (evt) => {
+    evt.preventDefault();
+    cardsContainer.replaceChild(cardComponent, cardEditComponent);
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
 }
 renderComponent(boardContainer, new LoadMoreButton().getElement(), `beforeend`);
 
