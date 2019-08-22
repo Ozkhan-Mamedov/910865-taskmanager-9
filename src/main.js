@@ -29,19 +29,56 @@ const getMaxTaskNumber = (arr) => {
   return result;
 };
 
+/**
+ * @param {number} tasksNum
+ */
+const renderTasks = (tasksNum) => {
+  for (let i = 0; i < tasksNum; i++) {
+    let cardComponent = new Task(currentTasks[i]).getElement();
+    let cardEditComponent = new TaskEdit(currentTasks[i]).getElement();
+
+    /**
+     * @param {KeyboardEvent} keyEvt
+     */
+    const onEscKeyDown = (keyEvt) => {
+      if (keyEvt.key === `Escape` || keyEvt.key === `Esc`) {
+        cardsContainer.replaceChild(cardComponent, cardEditComponent);
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
+
+    renderComponent(cardsContainer, cardComponent, `beforeend`);
+    cardComponent.querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+      cardsContainer.replaceChild(cardEditComponent, cardComponent);
+
+      const repeatInput = document.querySelector(`.card__repeat-status`);
+      const repeatingDays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
+
+      repeatingDays.forEach((it) => {
+        if (it.checked === true) {
+          repeatInput.innerHTML = `yes`;
+        }
+      });
+
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+    cardEditComponent.querySelector(`.card__save`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      cardsContainer.replaceChild(cardComponent, cardEditComponent);
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    });
+  }
+
+  for (let i = 0; i < tasksNum; i++) {
+    currentTasks.shift();
+  }
+};
+
 const onLoadMoreClick = () => {
   if (currentTasks.length !== 0) {
     let maxTasksLeft = getMaxTaskNumber(currentTasks);
 
-    for (let i = 0; i < maxTasksLeft; i++) {
-      renderComponent(cardsContainer, new Task(currentTasks[i]).getElement(), `beforeend`);
-    }
-
-    currentTasks.slice(0, maxTasksLeft);
-
-    for (let i = 0; i < maxTasksLeft; i++) {
-      currentTasks.shift();
-    }
+    renderTasks(maxTasksLeft);
   } else {
     document.querySelector(`.load-more`).remove();
   }
@@ -57,49 +94,7 @@ const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 let currentTasks = tasks.slice();
 
 renderComponent(boardContainer, new Sort().getElement(), `afterbegin`);
-
-for (let i = 0; i < DEFAULT_CARD_RENDER_NUMBER; i++) {
-  let cardComponent = new Task(tasks[i]).getElement();
-  let cardEditComponent = new TaskEdit(tasks[i]).getElement();
-
-  /**
-   * @param {KeyboardEvent} keyEvt
-   */
-  const onEscKeyDown = (keyEvt) => {
-    if (keyEvt.key === `Escape` || keyEvt.key === `Esc`) {
-      cardsContainer.replaceChild(cardComponent, cardEditComponent);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    }
-  };
-
-  renderComponent(cardsContainer, cardComponent, `beforeend`);
-  currentTasks.shift();
-  cardComponent.querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
-    cardsContainer.replaceChild(cardEditComponent, cardComponent);
-
-    const repeatInput = document.querySelector(`.card__repeat-status`);
-    const repeatingDays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
-    const colorInputs = document.querySelector(`.card__colors-wrap`).querySelectorAll(`input`);
-
-    colorInputs.forEach((it) => {
-      if (it.value === tasks[i].color) {
-        it.checked = `checked`;
-      }
-    });
-    repeatingDays.forEach((it) => {
-      if (it.checked === true) {
-        repeatInput.innerHTML = `yes`;
-      }
-    });
-
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
-  cardEditComponent.querySelector(`.card__save`).addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    cardsContainer.replaceChild(cardComponent, cardEditComponent);
-    document.removeEventListener(`keydown`, onEscKeyDown);
-  });
-}
+renderTasks(DEFAULT_CARD_RENDER_NUMBER);
 renderComponent(boardContainer, new LoadMoreButton().getElement(), `beforeend`);
 
 const loadMoreButton = document.querySelector(`.load-more`);

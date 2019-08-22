@@ -223,6 +223,7 @@ class TaskEdit {
                     class="card__color-input card__color-input--black visually-hidden"
                     name="color"
                     value="black"
+                    ${this._color === `black` ? `checked=""` : ``}
                   />
                   <label
                     for="color-black-4"
@@ -235,7 +236,7 @@ class TaskEdit {
                     class="card__color-input card__color-input--yellow visually-hidden"
                     name="color"
                     value="yellow"
-                    checked
+                    ${this._color === `yellow` ? `checked=""` : ``}
                   />
                   <label
                     for="color-yellow-4"
@@ -248,6 +249,7 @@ class TaskEdit {
                     class="card__color-input card__color-input--blue visually-hidden"
                     name="color"
                     value="blue"
+                    ${this._color === `blue` ? `checked=""` : ``}
                   />
                   <label
                     for="color-blue-4"
@@ -260,6 +262,7 @@ class TaskEdit {
                     class="card__color-input card__color-input--green visually-hidden"
                     name="color"
                     value="green"
+                    ${this._color === `green` ? `checked=""` : ``}
                   />
                   <label
                     for="color-green-4"
@@ -272,6 +275,7 @@ class TaskEdit {
                     class="card__color-input card__color-input--pink visually-hidden"
                     name="color"
                     value="pink"
+                    ${this._color === `pink` ? `checked=""` : ``}
                   />
                   <label
                     for="color-pink-4"
