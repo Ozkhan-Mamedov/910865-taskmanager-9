@@ -1,7 +1,7 @@
 import {createElement} from "../utils";
 
 const months = [
-  `Januray`,
+  `January`,
   `February`,
   `March`,
   `April`,
