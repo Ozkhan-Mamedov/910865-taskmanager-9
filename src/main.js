@@ -1,26 +1,17 @@
-import {getMenuComponent} from './components/menu';
-import {getSearchComponent} from './components/search';
-import {getFilterComponent} from './components/filter';
-import {getCardBoardComponent} from './components/card-board';
-import {getSortComponent} from './components/sort';
-import {getCardComponent} from './components/card';
-import {getCardEditComponent, hashtagComponents} from './components/card-edit';
-import {getButtonComponent} from './components/load-more-button';
-import {tasks} from "./data";
-import {filters} from "./data";
+import {Menu} from './components/menu';
+import {Search} from './components/search';
+import {Filter} from './components/filter';
+import {TaskBoard} from './components/card-board';
+import {Sort} from './components/sort';
+import {Task} from './components/card';
+import {TaskEdit} from './components/card-edit';
+import {LoadMoreButton} from './components/load-more-button';
+import {tasks, filters} from "./data";
 import {DEFAULT_CARD_RENDER_NUMBER} from "./constants";
+import {renderComponent} from "./utils";
 
 const mainContainer = document.querySelector(`.main`);
 const menuContainer = mainContainer.querySelector(`.main__control`);
-
-/**
- * @param {Element} container
- * @param {string} markup
- * @param {InsertPosition} place
- */
-const renderComponent = (container, markup, place) => {
-  container.insertAdjacentHTML(place, markup);
-};
 
 /**
  * @param {[object]} arr массив карточек
@@ -38,65 +29,73 @@ const getMaxTaskNumber = (arr) => {
   return result;
 };
 
-const setUpCardEditComponent = () => {
-  const repeatInput = document.querySelector(`.card__repeat-status`);
-  const repeatingDays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
-  const colorInputs = document.querySelector(`.card__colors-wrap`).querySelectorAll(`input`);
-  const hashtagEditContainer = document.querySelector(`.card__hashtag-list`);
+/**
+ * @param {number} tasksNum
+ */
+const renderTasks = (tasksNum) => {
+  for (let i = 0; i < tasksNum; i++) {
+    let cardComponent = new Task(currentTasks[i]).getElement();
+    let cardEditComponent = new TaskEdit(currentTasks[i]).getElement();
 
-  colorInputs.forEach((it) => {
-    if (it.value === cardEditColor) {
-      it.checked = `checked`;
-    }
-  });
-  repeatingDays.forEach((it) => {
-    if (it.checked === true) {
-      repeatInput.innerHTML = `yes`;
-    }
-  });
-  hashtagComponents.forEach((it) => {
-    renderComponent(hashtagEditContainer, it, `beforeend`);
-  });
-  currentTasks.shift();
+    /**
+     * @param {KeyboardEvent} keyEvt
+     */
+    const onEscKeyDown = (keyEvt) => {
+      if (keyEvt.key === `Escape` || keyEvt.key === `Esc`) {
+        cardsContainer.replaceChild(cardComponent, cardEditComponent);
+        document.removeEventListener(`keydown`, onEscKeyDown);
+      }
+    };
+
+    renderComponent(cardsContainer, cardComponent, `beforeend`);
+    cardComponent.querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+      cardsContainer.replaceChild(cardEditComponent, cardComponent);
+
+      const repeatInput = document.querySelector(`.card__repeat-status`);
+      const repeatingDays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
+
+      repeatingDays.forEach((it) => {
+        if (it.checked === true) {
+          repeatInput.innerHTML = `yes`;
+        }
+      });
+
+      document.addEventListener(`keydown`, onEscKeyDown);
+    });
+    cardEditComponent.querySelector(`.card__save`).addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      cardsContainer.replaceChild(cardComponent, cardEditComponent);
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    });
+  }
+
+  for (let i = 0; i < tasksNum; i++) {
+    currentTasks.shift();
+  }
 };
 
 const onLoadMoreClick = () => {
   if (currentTasks.length !== 0) {
     let maxTasksLeft = getMaxTaskNumber(currentTasks);
 
-    for (let i = 0; i < maxTasksLeft; i++) {
-      renderComponent(cardsContainer, getCardComponent(currentTasks[i]), `beforeend`);
-    }
-
-    currentTasks.slice(0, maxTasksLeft);
-
-    for (let i = 0; i < maxTasksLeft; i++) {
-      currentTasks.shift();
-    }
+    renderTasks(maxTasksLeft);
   } else {
     document.querySelector(`.load-more`).remove();
   }
 };
 
-renderComponent(menuContainer, getMenuComponent(), `beforeend`);
-renderComponent(mainContainer, getSearchComponent(), `beforeend`);
-renderComponent(mainContainer, getFilterComponent(filters), `beforeend`);
-renderComponent(mainContainer, getCardBoardComponent(), `beforeend`);
+renderComponent(menuContainer, new Menu().getElement(), `beforeend`);
+renderComponent(mainContainer, new Search().getElement(), `beforeend`);
+renderComponent(mainContainer, new Filter(filters).getElement(), `beforeend`);
+renderComponent(mainContainer, new TaskBoard().getElement(), `beforeend`);
 
 const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 let currentTasks = tasks.slice();
-const cardEditTemplate = currentTasks[0];
-const cardEditColor = cardEditTemplate.color;
 
-renderComponent(boardContainer, getSortComponent(), `afterbegin`);
-renderComponent(cardsContainer, getCardEditComponent(cardEditTemplate), `beforeend`);
-setUpCardEditComponent();
-for (let i = 1; i < DEFAULT_CARD_RENDER_NUMBER; i++) {
-  renderComponent(cardsContainer, getCardComponent(tasks[i]), `beforeend`);
-  currentTasks.shift();
-}
-renderComponent(boardContainer, getButtonComponent(), `beforeend`);
+renderComponent(boardContainer, new Sort().getElement(), `afterbegin`);
+renderTasks(DEFAULT_CARD_RENDER_NUMBER);
+renderComponent(boardContainer, new LoadMoreButton().getElement(), `beforeend`);
 
 const loadMoreButton = document.querySelector(`.load-more`);
 

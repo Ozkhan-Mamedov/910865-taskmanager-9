@@ -1,19 +1,19 @@
 import {getRandomNumber} from "./utils";
 import {DAYS_IN_WEEK, HOURS_IN_DAY, MINUTES_IN_HOUR, SECONDS_IN_MINUTE, MSECONDS_IN_SECOND,
-  MIN_TIME_RANGE, MAX_TIME_RANGE, TASKS_NUMBER} from "./constants";
+  MIN_TIME_RANGE, MAX_TIME_RANGE, TASKS_NUMBER, MAX_TAGS_NUMBER} from "./constants";
 
 const taskDescriptions = [
   `Изучить теорию`,
   `Сделать домашку`,
   `Пройти интенсив на соточку`,
 ];
-const taskTags = new Set([
+const tagList = [
   `homework`,
   `theory`,
   `practice`,
   `intensive`,
   `keks`,
-]);
+];
 const taskColors = [
   `black`,
   `yellow`,
@@ -23,20 +23,32 @@ const taskColors = [
 ];
 
 /**
- * @return { {
- * description: string,
- * dueDate: number,
- * repeatingDays: {Tu: boolean, Mo: boolean, Su: boolean, Th: boolean, Fr: boolean, We: boolean, Sa: boolean},
- * isArchive: boolean,
- * color: string,
- * isFavourite: boolean,
- * tags: [string] } }
+ * @return {Set<string>}
  */
-export const getTask = () => ({
-  description: taskDescriptions[getRandomNumber(0, taskDescriptions.length - 1)],
-  dueDate: Date.now() + getRandomNumber(MIN_TIME_RANGE, MAX_TIME_RANGE)
-    + getRandomNumber(0, DAYS_IN_WEEK - 1) * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MSECONDS_IN_SECOND,
-  repeatingDays: {
+const getTagSet = () => {
+  let tagSet = new Set();
+  const tagSetSize = getRandomNumber(0, MAX_TAGS_NUMBER);
+
+  while (tagSet.size !== tagSetSize) {
+    tagSet.add(tagList[getRandomNumber(0, tagList.length - 1)]);
+  }
+
+  return tagSet;
+};
+
+/**
+ * @return {
+ *           { Tu: boolean,
+ *             Mo: boolean,
+ *             Su: boolean,
+ *             Th: boolean,
+ *             Fr: boolean,
+ *             We: boolean,
+ *             Sa: boolean }
+ *         }
+ */
+const getRepeatingDays = () => {
+  return {
     'Mo': false,
     'Tu': false,
     'We': Boolean(Math.round(Math.random())),
@@ -44,8 +56,25 @@ export const getTask = () => ({
     'Fr': false,
     'Sa': false,
     'Su': false,
-  },
-  tags: taskTags,
+  };
+};
+
+/**
+ * @return { {
+ * description: string,
+ * dueDate: number,
+ * repeatingDays: {Tu: boolean, Mo: boolean, Su: boolean, Th: boolean, Fr: boolean, We: boolean, Sa: boolean},
+ * isArchive: boolean,
+ * color: string,
+ * isFavourite: boolean,
+ * tags: Set<string> } }
+ */
+const getTask = () => ({
+  description: taskDescriptions[getRandomNumber(0, taskDescriptions.length - 1)],
+  dueDate: Date.now() + getRandomNumber(MIN_TIME_RANGE, MAX_TIME_RANGE)
+    + getRandomNumber(0, DAYS_IN_WEEK - 1) * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MSECONDS_IN_SECOND,
+  repeatingDays: getRepeatingDays(),
+  tags: getTagSet(),
   color: taskColors[getRandomNumber(0, taskColors.length - 1)],
   isFavorite: Boolean(Math.round(Math.random())),
   isArchive: Boolean(Math.round(Math.random())),
@@ -146,12 +175,15 @@ const getQuantityNumber = (name, tasks) => {
   return result;
 };
 
-export const tasks = Array(TASKS_NUMBER);
-export const filters = Array(filterTitles.length);
+const tasks = Array(TASKS_NUMBER);
+const filters = Array(filterTitles.length);
+
 
 for (let i = 0; i < TASKS_NUMBER; i++) {
   tasks[i] = getTask();
 }
+
+// tasks.map(getTask);
 
 for (let i = 0; i < filters.length; i++) {
   let filterName = filterTitles[i];
@@ -161,3 +193,9 @@ for (let i = 0; i < filters.length; i++) {
     count: getFilter().count(`${filterName}`, tasks),
   };
 }
+
+export {
+  getTask,
+  tasks,
+  filters
+};
