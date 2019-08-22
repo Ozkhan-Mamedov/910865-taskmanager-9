@@ -29,10 +29,10 @@ const getHashtagComponent = (hashtagName) => {
 };
 
 hashtags.tags.forEach((it) => {
-  hashtagComponents.push(getHashtagComponent(it));
+  hashtagComponents.push(createElement(getHashtagComponent(it)));
 });
 
-class CardEdit {
+class TaskEdit {
   /**
    * @param {string} description
    * @param {number} dueDate
@@ -60,7 +60,7 @@ class CardEdit {
   }
 
   /**
-   * @return {null | ChildNode}
+   * @return {null | Node}
    */
   getElement() {
     if (!this._element) {
@@ -308,5 +308,5 @@ class CardEdit {
 
 export {
   hashtagComponents,
-  CardEdit
+  TaskEdit
 };

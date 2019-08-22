@@ -1,3 +1,8 @@
+const Position = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};
+
 /**
  * @param {number} min
  * @param {number} max
@@ -16,16 +21,24 @@ const createElement = (template) => {
 
   newElement.innerHTML = template;
 
-  return newElement.firstChild;
+  return newElement;
 };
 
 /**
  * @param {Element} container
- * @param {string} markup
+ * @param {Node} element
  * @param {InsertPosition} place
  */
-const renderComponent = (container, markup, place) => {
-  container.insertAdjacentHTML(place, markup);
+const renderComponent = (container, element, place) => {
+  switch (place) {
+    case Position.AFTERBEGIN:
+      container.prepend(element);
+      break;
+
+    case Position.BEFOREEND:
+      container.append(element);
+      break;
+  }
 };
 
 /**

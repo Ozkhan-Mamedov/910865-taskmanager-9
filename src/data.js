@@ -149,9 +149,12 @@ const getQuantityNumber = (name, tasks) => {
 const tasks = Array(TASKS_NUMBER);
 const filters = Array(filterTitles.length);
 
+
 for (let i = 0; i < TASKS_NUMBER; i++) {
   tasks[i] = getTask();
 }
+
+// tasks.map(getTask);
 
 for (let i = 0; i < filters.length; i++) {
   let filterName = filterTitles[i];

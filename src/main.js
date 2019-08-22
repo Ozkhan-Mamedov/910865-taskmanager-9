@@ -4,10 +4,9 @@ import {Filter} from './components/filter';
 import {TaskBoard} from './components/card-board';
 import {Sort} from './components/sort';
 import {Task} from './components/card';
-import {CardEdit, hashtagComponents} from './components/card-edit';
+import {TaskEdit, hashtagComponents} from './components/card-edit';
 import {LoadMoreButton} from './components/load-more-button';
-import {tasks} from "./data";
-import {filters} from "./data";
+import {tasks, filters} from "./data";
 import {DEFAULT_CARD_RENDER_NUMBER} from "./constants";
 import {renderComponent} from "./utils";
 
@@ -57,7 +56,7 @@ const onLoadMoreClick = () => {
     let maxTasksLeft = getMaxTaskNumber(currentTasks);
 
     for (let i = 0; i < maxTasksLeft; i++) {
-      renderComponent(cardsContainer, getCardComponent(currentTasks[i]), `beforeend`);
+      renderComponent(cardsContainer, new Task(currentTasks[i]).getElement(), `beforeend`);
     }
 
     currentTasks.slice(0, maxTasksLeft);
@@ -70,10 +69,10 @@ const onLoadMoreClick = () => {
   }
 };
 
-renderComponent(menuContainer, getMenuComponent(), `beforeend`);
-renderComponent(mainContainer, getSearchComponent(), `beforeend`);
-renderComponent(mainContainer, getFilterComponent(filters), `beforeend`);
-renderComponent(mainContainer, getCardBoardComponent(), `beforeend`);
+renderComponent(menuContainer, new Menu().getElement(), `beforeend`);
+renderComponent(mainContainer, new Search().getElement(), `beforeend`);
+renderComponent(mainContainer, new Filter(filters).getElement(), `beforeend`);
+renderComponent(mainContainer, new TaskBoard().getElement(), `beforeend`);
 
 const boardContainer = mainContainer.querySelector(`.board`);
 const cardsContainer = mainContainer.querySelector(`.board__tasks`);
@@ -81,14 +80,14 @@ let currentTasks = tasks.slice();
 const cardEditTemplate = currentTasks[0];
 const cardEditColor = cardEditTemplate.color;
 
-renderComponent(boardContainer, getSortComponent(), `afterbegin`);
-renderComponent(cardsContainer, getCardEditComponent(cardEditTemplate), `beforeend`);
+renderComponent(boardContainer, new Sort().getElement(), `afterbegin`);
+renderComponent(cardsContainer, new TaskEdit(cardEditTemplate).getElement(), `beforeend`);
 setUpCardEditComponent();
 for (let i = 1; i < DEFAULT_CARD_RENDER_NUMBER; i++) {
-  renderComponent(cardsContainer, getCardComponent(tasks[i]), `beforeend`);
+  renderComponent(cardsContainer, new Task(tasks[i]).getElement(), `beforeend`);
   currentTasks.shift();
 }
-renderComponent(boardContainer, getButtonComponent(), `beforeend`);
+renderComponent(boardContainer, new LoadMoreButton().getElement(), `beforeend`);
 
 const loadMoreButton = document.querySelector(`.load-more`);
 

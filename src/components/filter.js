@@ -11,7 +11,7 @@ class Filter {
   }
 
   /**
-   * @return {null | ChildNode}
+   * @return {null | Node}
    */
   getElement() {
     if (!this._element) {
