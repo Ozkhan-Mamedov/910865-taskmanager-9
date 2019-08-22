@@ -1,36 +1,5 @@
 import {months} from "./card";
-import {tasks} from "../data";
 import {createElement} from "../utils";
-
-const hashtags = tasks[0];
-let hashtagComponents = [];
-
-/**
- * @param {string} hashtagName
- * @return {string}
- */
-const getHashtagComponent = (hashtagName) => {
-  return `
-  <span class="card__hashtag-inner">
-    <input
-      type="hidden"
-      name="hashtag"
-      value="repeat"
-      class="card__hashtag-hidden-input"
-    />
-    <p class="card__hashtag-name">
-      #${hashtagName}
-    </p>
-    <button type="button" class="card__hashtag-delete">
-      delete
-    </button>
-  </span>
-  `;
-};
-
-hashtags.tags.forEach((it) => {
-  hashtagComponents.push(createElement(getHashtagComponent(it)));
-});
 
 class TaskEdit {
   /**
@@ -48,8 +17,9 @@ class TaskEdit {
    * @param {string} color
    * @param {boolean} isFavorite
    * @param {boolean} isArchive
+   * @param {Set<string>} tags
    */
-  constructor({description, dueDate, repeatingDays, color, isFavorite, isArchive}) {
+  constructor({description, dueDate, repeatingDays, color, tags, isFavorite, isArchive}) {
     this._description = description;
     this._dueDate = dueDate;
     this._repeatingDays = repeatingDays;
@@ -57,6 +27,7 @@ class TaskEdit {
     this._isFavorite = isFavorite;
     this._isArchive = isArchive;
     this._element = null;
+    this._tags = tags;
   }
 
   /**
@@ -214,6 +185,22 @@ class TaskEdit {
   
                 <div class="card__hashtag">
                   <div class="card__hashtag-list">
+                  ${Array.from(this._tags).map((it, index, arr) => index < arr.length ? `
+                    <span class="card__hashtag-inner">
+                        <input
+                          type="hidden"
+                          name="hashtag"
+                          value="repeat"
+                          class="card__hashtag-hidden-input"
+                        />
+                        <p class="card__hashtag-name">
+                          #${it}
+                        </p>
+                        <button type="button" class="card__hashtag-delete">
+                            delete
+                        </button>
+                    </span>
+                  ` : ``).join(``)}
                   </div>
   
                   <label>
@@ -307,6 +294,5 @@ class TaskEdit {
 }
 
 export {
-  hashtagComponents,
   TaskEdit
 };

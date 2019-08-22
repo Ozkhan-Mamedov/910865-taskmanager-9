@@ -67,7 +67,7 @@ const getRepeatingDays = () => {
  * isArchive: boolean,
  * color: string,
  * isFavourite: boolean,
- * tags: [string] } }
+ * tags: Set<string> } }
  */
 const getTask = () => ({
   description: taskDescriptions[getRandomNumber(0, taskDescriptions.length - 1)],
