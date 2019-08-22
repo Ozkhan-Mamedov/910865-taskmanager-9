@@ -1,19 +1,19 @@
 import {getRandomNumber} from "./utils";
 import {DAYS_IN_WEEK, HOURS_IN_DAY, MINUTES_IN_HOUR, SECONDS_IN_MINUTE, MSECONDS_IN_SECOND,
-  MIN_TIME_RANGE, MAX_TIME_RANGE, TASKS_NUMBER} from "./constants";
+  MIN_TIME_RANGE, MAX_TIME_RANGE, TASKS_NUMBER, MAX_TAGS_NUMBER} from "./constants";
 
 const taskDescriptions = [
   `Изучить теорию`,
   `Сделать домашку`,
   `Пройти интенсив на соточку`,
 ];
-const taskTags = new Set([
+const tagList = [
   `homework`,
   `theory`,
   `practice`,
   `intensive`,
   `keks`,
-]);
+];
 const taskColors = [
   `black`,
   `yellow`,
@@ -21,6 +21,43 @@ const taskColors = [
   `green`,
   `pink`,
 ];
+
+/**
+ * @return {Set<string>}
+ */
+const getTagSet = () => {
+  let tagSet = new Set();
+  const tagSetSize = getRandomNumber(0, MAX_TAGS_NUMBER);
+
+  while (tagSet.size !== tagSetSize) {
+    tagSet.add(tagList[getRandomNumber(0, tagList.length - 1)]);
+  }
+
+  return tagSet;
+};
+
+/**
+ * @return {
+ *           { Tu: boolean,
+ *             Mo: boolean,
+ *             Su: boolean,
+ *             Th: boolean,
+ *             Fr: boolean,
+ *             We: boolean,
+ *             Sa: boolean }
+ *         }
+ */
+const getRepeatingDays = () => {
+  return {
+    'Mo': false,
+    'Tu': false,
+    'We': Boolean(Math.round(Math.random())),
+    'Th': false,
+    'Fr': false,
+    'Sa': false,
+    'Su': false,
+  };
+};
 
 /**
  * @return { {
@@ -36,16 +73,8 @@ const getTask = () => ({
   description: taskDescriptions[getRandomNumber(0, taskDescriptions.length - 1)],
   dueDate: Date.now() + getRandomNumber(MIN_TIME_RANGE, MAX_TIME_RANGE)
     + getRandomNumber(0, DAYS_IN_WEEK - 1) * HOURS_IN_DAY * MINUTES_IN_HOUR * SECONDS_IN_MINUTE * MSECONDS_IN_SECOND,
-  repeatingDays: {
-    'Mo': false,
-    'Tu': false,
-    'We': Boolean(Math.round(Math.random())),
-    'Th': false,
-    'Fr': false,
-    'Sa': false,
-    'Su': false,
-  },
-  tags: taskTags,
+  repeatingDays: getRepeatingDays(),
+  tags: getTagSet(),
   color: taskColors[getRandomNumber(0, taskColors.length - 1)],
   isFavorite: Boolean(Math.round(Math.random())),
   isArchive: Boolean(Math.round(Math.random())),
