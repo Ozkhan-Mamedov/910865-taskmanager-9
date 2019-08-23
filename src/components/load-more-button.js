@@ -24,6 +24,4 @@ class LoadMoreButton {
   }
 }
 
-export {
-  LoadMoreButton
-};
+export default LoadMoreButton;

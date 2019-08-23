@@ -47,6 +47,4 @@ class Filter {
   }
 }
 
-export {
-  Filter
-};
+export default Filter;
