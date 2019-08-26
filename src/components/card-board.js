@@ -28,6 +28,4 @@ class TaskBoard {
   }
 }
 
-export {
-  TaskBoard
-};
+export default TaskBoard;

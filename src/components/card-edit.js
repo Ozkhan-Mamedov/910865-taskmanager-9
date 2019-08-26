@@ -297,6 +297,4 @@ class TaskEdit {
   }
 }
 
-export {
-  TaskEdit
-};
+export default TaskEdit;

@@ -53,6 +53,4 @@ class Menu {
   }
 }
 
-export {
-  Menu
-};
+export default Menu;
