@@ -1,7 +1,7 @@
 import {months} from "./card";
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
-class TaskEdit {
+class TaskEdit extends AbstractComponent {
   /**
    * @param {string} description
    * @param {number} dueDate
@@ -20,25 +20,14 @@ class TaskEdit {
    * @param {Set<string>} tags
    */
   constructor({description, dueDate, repeatingDays, color, tags, isFavorite, isArchive}) {
+    super();
     this._description = description;
     this._dueDate = dueDate;
     this._repeatingDays = repeatingDays;
     this._color = color;
     this._isFavorite = isFavorite;
     this._isArchive = isArchive;
-    this._element = null;
     this._tags = tags;
-  }
-
-  /**
-   * @return {null | Node}
-   */
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 
   /**
