@@ -1,6 +1,8 @@
 import Board from "../components/board";
 import TaskList from "../components/task-list";
+import Sort from "../components/sort";
 import {renderComponent} from "../utils";
+import {tasks} from "../data";
 import {Task} from "../components/card";
 import TaskEdit from "../components/card-edit";
 import LoadMoreButton from "../components/load-more-button";
@@ -10,18 +12,19 @@ class BoardController {
   constructor(container, currentTasks) {
     this._container = container;
     this._currentTasks = currentTasks;
+    this._tasks = tasks;
     this._board = new Board();
     this._taskList = new TaskList();
-    this._LoadMoreButton = new LoadMoreButton();
+    this._sort = new Sort();
   }
 
   init() {
     renderComponent(this._container, this._board.getElement(), `beforeend`);
+    renderComponent(this._board.getElement().firstChild, this._sort.getElement(), `beforeend`);
     renderComponent(this._board.getElement().firstChild, this._taskList.getElement(), `beforeend`);
-    for (let i = 0; i < DEFAULT_CARD_RENDER_NUMBER; i++) {
-      this._renderTask(this._currentTasks[0]);
-    }
+    this._currentTasks.slice(0, DEFAULT_CARD_RENDER_NUMBER).forEach((it) => this._renderTask(it));
     this._renderLoadMoreButton();
+    this._sort.getElement().addEventListener(`click`, (evt) => this._onSortLinkClick(evt));
   }
 
   /**
@@ -100,18 +103,60 @@ class BoardController {
         let maxTasksLeft = getMaxTaskNumber(this._currentTasks);
 
         for (let i = 0; i < maxTasksLeft; i++) {
-          this._renderTask(this._currentTasks[0]); // ?
+          this._renderTask(this._currentTasks[0]);
         }
       } else {
         document.querySelector(`.load-more`).remove();
       }
     };
 
-    renderComponent(this._board.getElement().firstChild, this._LoadMoreButton.getElement(), `beforeend`);
+    const loadMoreButton = new LoadMoreButton();
 
-    const loadMoreButton = document.querySelector(`.load-more`);
+    renderComponent(this._board.getElement().firstChild, loadMoreButton.getElement(), `beforeend`);
+    loadMoreButton.getElement().querySelector(`.load-more`).addEventListener(`click`, onLoadMoreClick);
+  }
 
-    loadMoreButton.addEventListener(`click`, onLoadMoreClick);
+  _onSortLinkClick(evt) {
+    evt.preventDefault();
+    if (evt.target.tagName !== `A`) {
+      return;
+    }
+    this._taskList.getElement().firstChild.innerHTML = ``;
+
+    switch (evt.target.dataset.sortType) {
+      case `default`:
+        if (document.querySelector(`.load-more`) !== null) {
+          document.querySelector(`.load-more`).remove();
+        }
+        this._currentTasks = this._tasks.slice();
+        this._currentTasks.slice(0, DEFAULT_CARD_RENDER_NUMBER).forEach((it) => {
+          this._renderTask(it);
+        });
+        this._renderLoadMoreButton();
+        break;
+
+      case `date-up`:
+        if (document.querySelector(`.load-more`) !== null) {
+          document.querySelector(`.load-more`).remove();
+        }
+        this._currentTasks = this._tasks.slice().sort((a, b) => a.dueDate - b.dueDate);
+        this._currentTasks.slice(0, DEFAULT_CARD_RENDER_NUMBER).forEach((it) => {
+          this._renderTask(it);
+        });
+        this._renderLoadMoreButton();
+        break;
+
+      case `date-down`:
+        if (document.querySelector(`.load-more`) !== null) {
+          document.querySelector(`.load-more`).remove();
+        }
+        this._currentTasks = this._tasks.slice().sort((a, b) => b.dueDate - a.dueDate);
+        this._currentTasks.slice(0, DEFAULT_CARD_RENDER_NUMBER).forEach((it) => {
+          this._renderTask(it);
+        });
+        this._renderLoadMoreButton();
+        break;
+    }
   }
 }
 

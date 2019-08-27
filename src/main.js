@@ -1,7 +1,6 @@
 import Menu from './components/menu';
 import Search from './components/search';
 import Filter from './components/filter';
-import Sort from './components/sort';
 import NoTasks from "./components/no-tasks";
 import {tasks, filters} from "./data";
 import {renderComponent, unrenderComponent} from "./utils";
@@ -34,7 +33,6 @@ const generatePageElements = () => {
   const boardContainer = mainContainer.querySelector(`.board`);
   const cardsContainer = mainContainer.querySelector(`.board__tasks`);
 
-  renderComponent(boardContainer, new Sort().getElement(), `afterbegin`);
   checkTasksState();
 };
 
