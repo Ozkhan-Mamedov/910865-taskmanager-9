@@ -1,7 +1,10 @@
 import {createElement} from "../utils";
 
-class TaskBoard {
+class AbstractComponent {
   constructor() {
+    if (new.target === AbstractComponent) {
+      throw new Error(`Can't instantiate AbstractComponent, only concrete one.`);
+    }
     this._element = null;
   }
 
@@ -16,16 +19,9 @@ class TaskBoard {
     return this._element;
   }
 
-  /**
-   * @return {string}
-   */
   getTemplate() {
-    return `
-      <section class="board container">
-          <div class="board__tasks"></div>
-      </section>
-    `;
+    throw new Error(`Abstract method not implemented: getTemplate`);
   }
 }
 
-export default TaskBoard;
+export default AbstractComponent;

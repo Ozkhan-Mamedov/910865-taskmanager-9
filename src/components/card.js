@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractComponent from "./abstract-component";
 
 const months = [
   `January`,
@@ -15,7 +15,7 @@ const months = [
   `December`
 ];
 
-class Task {
+class Task extends AbstractComponent {
   /**
    * @param {string} description
    * @param {number} dueDate
@@ -34,6 +34,7 @@ class Task {
    * @param {boolean} isArchive
    */
   constructor({description, dueDate, repeatingDays, tags, color, isFavorite, isArchive}) {
+    super();
     this._description = description;
     this._dueDate = dueDate;
     this._repeatingDays = repeatingDays;
@@ -41,18 +42,6 @@ class Task {
     this._color = color;
     this._isFavorite = isFavorite;
     this._isArchive = isArchive;
-    this._element = null;
-  }
-
-  /**
-   * @return {null | Node}
-   */
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 
   /**
