@@ -2,16 +2,14 @@ import Board from "../components/board";
 import TaskList from "../components/task-list";
 import Sort from "../components/sort";
 import {renderComponent} from "../utils";
-import {tasks} from "../data";
 import {Task} from "../components/card";
 import TaskEdit from "../components/card-edit";
 import LoadMoreButton from "../components/load-more-button";
 import {DEFAULT_CARD_RENDER_NUMBER} from "../constants";
 
 class BoardController {
-  constructor(container, currentTasks) {
+  constructor(container, tasks) {
     this._container = container;
-    this._currentTasks = currentTasks;
     this._tasks = tasks;
     this._board = new Board();
     this._taskList = new TaskList();
@@ -22,6 +20,7 @@ class BoardController {
     renderComponent(this._container, this._board.getElement(), `beforeend`);
     renderComponent(this._board.getElement().firstChild, this._sort.getElement(), `beforeend`);
     renderComponent(this._board.getElement().firstChild, this._taskList.getElement(), `beforeend`);
+    this._currentTasks = this._tasks.slice();
     this._currentTasks.slice(0, DEFAULT_CARD_RENDER_NUMBER).forEach((it) => this._renderTask(it));
     this._renderLoadMoreButton();
     this._sort.getElement().addEventListener(`click`, (evt) => this._onSortLinkClick(evt));

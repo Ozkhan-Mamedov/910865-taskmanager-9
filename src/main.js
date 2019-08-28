@@ -25,8 +25,7 @@ const generatePageElements = () => {
   renderComponent(mainContainer, new Search().getElement(), `beforeend`);
   renderComponent(mainContainer, new Filter(filters).getElement(), `beforeend`);
 
-  let currentTasks = tasks.slice();
-  const boardController = new BoardController(mainContainer, currentTasks);
+  const boardController = new BoardController(mainContainer, tasks);
 
   boardController.init();
 
