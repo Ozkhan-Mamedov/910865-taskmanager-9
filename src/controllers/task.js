@@ -48,6 +48,27 @@ class TaskController {
     });
     this._taskEdit.querySelector(`.card__form`).addEventListener(`submit`, (evt) => {
       evt.preventDefault();
+
+      const formData = new FormData(this._taskEdit.querySelector(`.card__form`));
+      const entry = {
+        description: formData.get(`text`),
+        dueDate: formData.get(`date`),
+        repeatingDays: formData.getAll(`repeat`).reduce((acc, it) => {
+          acc[it] = true;
+          return acc;
+        }, {
+          'mo': false,
+          'tu': false,
+          'we': false,
+          'th': false,
+          'fr': false,
+          'sa': false,
+          'su': false,
+        }),
+        tags: new Set(formData.getAll(`hashtag`)),
+        color: formData.get(`color`),
+      };
+
       this._container.getElement().firstChild.replaceChild(this._taskView, this._taskEdit);
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
