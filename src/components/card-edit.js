@@ -179,7 +179,7 @@ class TaskEdit extends AbstractComponent {
                         <input
                           type="hidden"
                           name="hashtag"
-                          value="repeat"
+                          value="${it}"
                           class="card__hashtag-hidden-input"
                         />
                         <p class="card__hashtag-name">
