@@ -2,10 +2,9 @@ import Board from "../components/board";
 import TaskList from "../components/task-list";
 import Sort from "../components/sort";
 import {renderComponent} from "../utils";
-import {Task} from "../components/card";
-import TaskEdit from "../components/card-edit";
 import LoadMoreButton from "../components/load-more-button";
 import {DEFAULT_CARD_RENDER_NUMBER} from "../constants";
+import TaskController from "./task";
 
 class BoardController {
   constructor(container, tasks) {
@@ -37,47 +36,7 @@ class BoardController {
    * tags: Set<string> }} task
    */
   _renderTask(task) {
-    let cardComponent = new Task(task).getElement();
-    let cardEditComponent = new TaskEdit(task).getElement();
-
-    /**
-     * @param {KeyboardEvent} keyEvt
-     */
-    const onEscKeyDown = (keyEvt) => {
-      if (keyEvt.key === `Escape` || keyEvt.key === `Esc`) {
-        this._taskList.getElement().firstChild.replaceChild(cardComponent, cardEditComponent);
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    renderComponent(this._taskList.getElement().firstChild, cardComponent, `beforeend`);
-    cardComponent.querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
-      this._taskList.getElement().firstChild.replaceChild(cardEditComponent, cardComponent);
-
-      const repeatInput = document.querySelector(`.card__repeat-status`);
-      const repeatingDays = document.querySelector(`.card__repeat-days-inner`).querySelectorAll(`input`);
-
-      repeatingDays.forEach((it) => {
-        if (it.checked === true) {
-          repeatInput.innerHTML = `yes`;
-        }
-      });
-
-      document.addEventListener(`keydown`, onEscKeyDown);
-      cardEditComponent.querySelector(`.card__text`).addEventListener(`focus`, () => {
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      });
-      cardEditComponent.querySelector(`.card__text`).addEventListener(`blur`, () => {
-        document.addEventListener(`keydown`, onEscKeyDown);
-      });
-
-    });
-    cardEditComponent.querySelector(`.card__form`).addEventListener(`submit`, (evt) => {
-      evt.preventDefault();
-      this._taskList.getElement().firstChild.replaceChild(cardComponent, cardEditComponent);
-      document.removeEventListener(`keydown`, onEscKeyDown);
-    });
-    this._currentTasks.shift();
+    new TaskController(this._taskList, task, this._currentTasks);
   }
 
   _renderLoadMoreButton() {
