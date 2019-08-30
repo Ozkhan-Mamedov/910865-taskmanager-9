@@ -9,6 +9,8 @@ class TaskController {
     this._currentTasks = currentTasks;
     this._taskView = new Task(data).getElement();
     this._taskEdit = new TaskEdit(data).getElement();
+    this._onDataChange = onDataChange;
+    this._onChangeView = onChangeView;
 
     this.init();
   }
@@ -44,7 +46,20 @@ class TaskController {
       this._taskEdit.querySelector(`.card__text`).addEventListener(`blur`, () => {
         document.addEventListener(`keydown`, onEscKeyDown);
       });
-
+      this._taskEdit.querySelector(`.card__btn--archive`).addEventListener(`click`, () => {
+        if (!this._taskEdit.querySelector(`.card__btn--archive`).classList.contains(`card__btn--disabled`)) {
+          this._taskEdit.querySelector(`.card__btn--archive`).classList.add(`card__btn--disabled`);
+        } else {
+          this._taskEdit.querySelector(`.card__btn--archive`).classList.remove(`card__btn--disabled`);
+        }
+      });
+      this._taskEdit.querySelector(`.card__btn--favorites`).addEventListener(`click`, () => {
+        if (!this._taskEdit.querySelector(`.card__btn--favorites`).classList.contains(`card__btn--disabled`)) {
+          this._taskEdit.querySelector(`.card__btn--favorites`).classList.add(`card__btn--disabled`);
+        } else {
+          this._taskEdit.querySelector(`.card__btn--favorites`).classList.remove(`card__btn--disabled`);
+        }
+      });
     });
     this._taskEdit.querySelector(`.card__form`).addEventListener(`submit`, (evt) => {
       evt.preventDefault();
@@ -57,19 +72,22 @@ class TaskController {
           acc[it] = true;
           return acc;
         }, {
-          'mo': false,
-          'tu': false,
-          'we': false,
-          'th': false,
-          'fr': false,
-          'sa': false,
-          'su': false,
+          'Mo': false,
+          'Tu': false,
+          'We': false,
+          'Th': false,
+          'Fr': false,
+          'Sa': false,
+          'Su': false,
         }),
         tags: new Set(formData.getAll(`hashtag`)),
         color: formData.get(`color`),
+        /*isFavorite: true,
+        isArchive: true,*/
       };
 
-      this._container.getElement().firstChild.replaceChild(this._taskView, this._taskEdit);
+      this._onDataChange(entry, this._data);
+      // this._container.getElement().firstChild.replaceChild(this._taskView, this._taskEdit);
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
     this._currentTasks.shift();

@@ -1,5 +1,6 @@
 import {months} from "./card";
 import AbstractComponent from "./abstract-component";
+import {unrenderComponent} from "../utils";
 
 class TaskEdit extends AbstractComponent {
   /**
@@ -28,6 +29,67 @@ class TaskEdit extends AbstractComponent {
     this._isFavorite = isFavorite;
     this._isArchive = isArchive;
     this._tags = tags;
+    this._subscribeOnEvents();
+    this._hideDateInput();
+    this._hideRepeatingDaysInput();
+    this._changeTaskColor();
+  }
+
+  _checkRepeatingDays() {
+    let flag = false;
+
+    for (let key in this._repeatingDays) {
+      if (this._repeatingDays.hasOwnProperty(key)) {
+        if (this._repeatingDays[key] === true) {
+          flag = true;
+        }
+      }
+    }
+
+    return flag;
+  }
+
+  _hideDateInput() {
+    this.getElement().querySelector(`.card__date-deadline-toggle`)
+      .addEventListener(`click`, () => {
+        if (this.getElement().querySelector(`.card__date-deadline`).style.display === `block`) {
+          this.getElement().querySelector(`.card__date-deadline`).style.display = `none`;
+          this.getElement().querySelector(`.card__date-status`).textContent = `no`;
+        } else {
+          this.getElement().querySelector(`.card__date-deadline`).style.display = `block`;
+          this.getElement().querySelector(`.card__date-status`).textContent = `yes`;
+        }
+      });
+  }
+
+  _hideRepeatingDaysInput() {
+    this.getElement().querySelector(`.card__repeat-toggle`)
+      .addEventListener(`click`, () => {
+        if (this.getElement().querySelector(`.card__repeat-days`).style.display === `block`) {
+          this.getElement().querySelector(`.card__repeat-days`).style.display = `none`;
+          this.getElement().querySelector(`.card__repeat-status`).textContent = `no`;
+          this.getElement().querySelector(`.card--edit`).classList.remove(`card--repeat`);
+        } else {
+          this.getElement().querySelector(`.card__repeat-days`).style.display = `block`;
+          this.getElement().querySelector(`.card__repeat-status`).textContent = `yes`;
+          this.getElement().querySelector(`.card--edit`).classList.add(`card--repeat`);
+        }
+      });
+  }
+
+  _changeTaskColor() {
+    this.getElement().querySelector(`.card__colors-wrap`)
+      .addEventListener(`click`, (evt) => {
+        if (evt.target.tagName === `INPUT`) {
+          const currentColor = evt.target.attributes.value.value;
+          const old = this.getElement().querySelector(`.card--edit`)
+            .classList[2];
+          const newer = `card--${currentColor}`;
+
+          this.getElement().querySelector(`.card--edit`)
+            .classList.replace(old, newer);
+        }
+      });
   }
 
   /**
@@ -86,10 +148,10 @@ class TaskEdit extends AbstractComponent {
                   </fieldset>
   
                   <button class="card__repeat-toggle" type="button">
-                    repeat:<span class="card__repeat-status">no</span>
+                    repeat:<span class="card__repeat-status">${this._checkRepeatingDays() ? `yes` : `no`}</span>
                   </button>
   
-                  <fieldset class="card__repeat-days">
+                  <fieldset class="card__repeat-days" ${this._checkRepeatingDays() ? `style="display: block"` : `style="display: none"`}>
                     <div class="card__repeat-days-inner">
                       <input
                         class="visually-hidden card__repeat-day-input"
@@ -283,6 +345,35 @@ class TaskEdit extends AbstractComponent {
         </form>
       </article>
     `;
+  }
+
+  _subscribeOnEvents() {
+    this.getElement()
+      .querySelector(`.card__hashtag-input`).addEventListener(`keydown`, (evt) => {
+        if (evt.key === `Enter`) {
+          evt.preventDefault();
+          this.getElement().querySelector(`.card__hashtag-list`).insertAdjacentHTML(`beforeend`, `<span class="card__hashtag-inner">
+            <input
+              type="hidden"
+              name="hashtag"
+              value="${evt.target.value}"
+              class="card__hashtag-hidden-input"
+            />
+            <p class="card__hashtag-name">
+              #${evt.target.value}
+            </p>
+            <button type="button" class="card__hashtag-delete">
+              delete
+            </button>
+          </span>`);
+          evt.target.value = ``;
+        }
+      });
+    this.getElement().querySelectorAll(`.card__hashtag-delete`).forEach((it) => {
+      it.addEventListener(`click`, () => {
+        unrenderComponent(it.parentElement);
+      });
+    });
   }
 }
 

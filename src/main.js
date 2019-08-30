@@ -5,7 +5,6 @@ import NoTasks from "./components/no-tasks";
 import {tasks, filters} from "./data";
 import {renderComponent, unrenderComponent} from "./utils";
 import BoardController from "./controllers/board";
-
 const mainContainer = document.querySelector(`.main`);
 const menuContainer = mainContainer.querySelector(`.main__control`);
 
@@ -25,7 +24,7 @@ const generatePageElements = () => {
   renderComponent(mainContainer, new Search().getElement(), `beforeend`);
   renderComponent(mainContainer, new Filter(filters).getElement(), `beforeend`);
 
-  const boardController = new BoardController(mainContainer, tasks);
+  const boardController = new BoardController(mainContainer, tasks.slice());
 
   boardController.init();
 

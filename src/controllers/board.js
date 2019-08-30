@@ -1,7 +1,7 @@
 import Board from "../components/board";
 import TaskList from "../components/task-list";
 import Sort from "../components/sort";
-import {renderComponent} from "../utils";
+import {renderComponent, unrenderComponent} from "../utils";
 import LoadMoreButton from "../components/load-more-button";
 import {DEFAULT_CARD_RENDER_NUMBER} from "../constants";
 import TaskController from "./task";
@@ -13,6 +13,7 @@ class BoardController {
     this._board = new Board();
     this._taskList = new TaskList();
     this._sort = new Sort();
+    this._onDataChange = this._onDataChange.bind(this);
   }
 
   init() {
@@ -36,7 +37,27 @@ class BoardController {
    * tags: Set<string> }} task
    */
   _renderTask(task) {
-    new TaskController(this._taskList, task, this._currentTasks);
+    const taskController = new TaskController(this._taskList, task, this._currentTasks, this._onDataChange, this._onChangeView);
+  }
+
+  /*
+   получает на вход обновленные данные задачи (все целиком, даже те поля, которые не изменились)
+   и изменяет их в моках. Передайте этот метод в TaskController (не забудьте привязать контекст)
+   */
+  _onDataChange(newData, oldData) {
+    console.log(newData);
+    this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
+    document.querySelector(`.board__tasks`).innerHTML = ``;
+    this._currentTasks = this._tasks.slice();
+    this._currentTasks.slice(0, DEFAULT_CARD_RENDER_NUMBER).forEach((it) => this._renderTask(it));// this._taskList.getElement().firstChild
+    // неверно записывается формат дата, повторяющиеся дни не попадают в изменение из-за того, что при клике не навешивается
+    // атрибут checked
+    if (this._currentTasks !== 0 && document.querySelector(`.load-more`) === null) {
+      this._renderLoadMoreButton();
+    }
+  }
+
+  _onChangeView() {
   }
 
   _renderLoadMoreButton() {
@@ -63,8 +84,12 @@ class BoardController {
         for (let i = 0; i < maxTasksLeft; i++) {
           this._renderTask(this._currentTasks[0]);
         }
+
+        if (this._currentTasks.length === 0) {
+          unrenderComponent(loadMoreButton.getElement());
+        }
       } else {
-        document.querySelector(`.load-more`).remove();
+        unrenderComponent(loadMoreButton.getElement());
       }
     };
 
@@ -74,6 +99,10 @@ class BoardController {
     loadMoreButton.getElement().querySelector(`.load-more`).addEventListener(`click`, onLoadMoreClick);
   }
 
+  /**
+   * @param {Event} evt
+   * @private
+   */
   _onSortLinkClick(evt) {
     evt.preventDefault();
     if (evt.target.tagName !== `A`) {
