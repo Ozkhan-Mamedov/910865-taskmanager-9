@@ -14,6 +14,8 @@ class BoardController {
     this._taskList = new TaskList();
     this._sort = new Sort();
     this._onDataChange = this._onDataChange.bind(this);
+    this._onChangeView = this._onChangeView.bind(this);
+    this._subscriptions = [];
   }
 
   init() {
@@ -38,14 +40,12 @@ class BoardController {
    */
   _renderTask(task) {
     const taskController = new TaskController(this._taskList, task, this._currentTasks, this._onDataChange, this._onChangeView);
+
+    this._subscriptions.push(taskController.setDefaultView.bind(taskController));
   }
 
-  /*
-   получает на вход обновленные данные задачи (все целиком, даже те поля, которые не изменились)
-   и изменяет их в моках. Передайте этот метод в TaskController (не забудьте привязать контекст)
-   */
   _onDataChange(newData, oldData) {
-    console.log(newData);
+    // console.log(newData);
     this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
     document.querySelector(`.board__tasks`).innerHTML = ``;
     this._currentTasks = this._tasks.slice();
@@ -58,6 +58,7 @@ class BoardController {
   }
 
   _onChangeView() {
+    this._subscriptions.forEach((subscription) => subscription());
   }
 
   _renderLoadMoreButton() {

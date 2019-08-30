@@ -12,10 +12,10 @@ class TaskController {
     this._onDataChange = onDataChange;
     this._onChangeView = onChangeView;
 
-    this.init();
+    this.create();
   }
 
-  init() {
+  create() {
     /**
      * @param {KeyboardEvent} keyEvt
      */
@@ -28,6 +28,7 @@ class TaskController {
 
     renderComponent(this._container.getElement().firstChild, this._taskView, `beforeend`);
     this._taskView.querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
+      this._onChangeView();
       this._container.getElement().firstChild.replaceChild(this._taskEdit, this._taskView);
 
       const repeatInput = document.querySelector(`.card__repeat-status`);
@@ -82,15 +83,22 @@ class TaskController {
         }),
         tags: new Set(formData.getAll(`hashtag`)),
         color: formData.get(`color`),
-        /*isFavorite: true,
-        isArchive: true,*/
+        /*
+        isFavorite: true,
+        isArchive: true,
+        */
       };
 
       this._onDataChange(entry, this._data);
-      // this._container.getElement().firstChild.replaceChild(this._taskView, this._taskEdit);
       document.removeEventListener(`keydown`, onEscKeyDown);
     });
     this._currentTasks.shift();
+  }
+
+  setDefaultView() {
+    if (this._container.getElement().querySelector(`.board__tasks`).contains(this._taskEdit)) {
+      this._container.getElement().querySelector(`.board__tasks`).replaceChild(this._taskView, this._taskEdit);
+    }
   }
 }
 
