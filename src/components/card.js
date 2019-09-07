@@ -56,10 +56,10 @@ class Task extends AbstractComponent {
               <button type="button" class="card__btn card__btn--edit">
                 edit
               </button>
-              <button type="button" class="card__btn card__btn--archive ${this._isArchive ? `` : `card__btn--disabled`}">
+              <button type="button" class="card__btn card__btn--archive ${this._isArchive ? `card__btn--disabled` : ``}">
                 archive
               </button>
-              <button type="button" class="card__btn card__btn--favorites ${this._isFavorite ? `` : `card__btn--disabled`}">
+              <button type="button" class="card__btn card__btn--favorites ${this._isFavorite ? `card__btn--disabled` : ``}">
                 favorites
               </button>
             </div>

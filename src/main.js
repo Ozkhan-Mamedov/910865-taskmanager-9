@@ -24,7 +24,8 @@ const generatePageElements = () => {
   renderComponent(mainContainer, new Search().getElement(), `beforeend`);
   renderComponent(mainContainer, new Filter(filters).getElement(), `beforeend`);
 
-  const boardController = new BoardController(mainContainer, tasks.slice());
+  const filteredTasks = tasks.filter((it) => it.isArchive === false);
+  const boardController = new BoardController(mainContainer, filteredTasks.slice());
 
   boardController.init();
 

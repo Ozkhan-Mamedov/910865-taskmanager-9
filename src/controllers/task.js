@@ -21,12 +21,27 @@ class TaskController {
      */
     const onEscKeyDown = (keyEvt) => {
       if (keyEvt.key === `Escape` || keyEvt.key === `Esc`) {
-        this._container.getElement().firstChild.replaceChild(this._taskView, this._taskEdit);
         document.removeEventListener(`keydown`, onEscKeyDown);
+        this._container.getElement().firstChild.replaceChild(this._taskView, this._taskEdit);
       }
     };
 
     renderComponent(this._container.getElement().firstChild, this._taskView, `beforeend`);
+    this._taskView.querySelector(`.card__btn--favorites`).addEventListener(`click`, () => {
+      if (this._taskView.querySelector(`.card__btn--favorites`).classList.contains(`card__btn--disabled`)) {
+        this._taskView.querySelector(`.card__btn--favorites`).classList.remove(`card__btn--disabled`);
+        document.querySelector(`.filter__favorites-count`).textContent--;
+      } else {
+        this._taskView.querySelector(`.card__btn--favorites`).classList.add(`card__btn--disabled`);
+        document.querySelector(`.filter__favorites-count`).textContent++;
+      }
+    });
+    this._taskView.querySelector(`.card__btn--archive`).addEventListener(`click`, () => {
+      if (!this._taskView.querySelector(`.card__btn--archive`).classList.contains(`card__btn--disabled`)) {
+        this._taskView.querySelector(`.card__btn--archive`).classList.add(`card__btn--disabled`);
+        document.querySelector(`.filter__archive-count`).textContent++;
+      }
+    });
     this._taskView.querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
       this._onChangeView();
       this._container.getElement().firstChild.replaceChild(this._taskEdit, this._taskView);
@@ -50,15 +65,19 @@ class TaskController {
       this._taskEdit.querySelector(`.card__btn--archive`).addEventListener(`click`, () => {
         if (!this._taskEdit.querySelector(`.card__btn--archive`).classList.contains(`card__btn--disabled`)) {
           this._taskEdit.querySelector(`.card__btn--archive`).classList.add(`card__btn--disabled`);
+          document.querySelector(`.filter__archive-count`).textContent++;
         } else {
           this._taskEdit.querySelector(`.card__btn--archive`).classList.remove(`card__btn--disabled`);
+          document.querySelector(`.filter__archive-count`).textContent--;
         }
       });
       this._taskEdit.querySelector(`.card__btn--favorites`).addEventListener(`click`, () => {
         if (!this._taskEdit.querySelector(`.card__btn--favorites`).classList.contains(`card__btn--disabled`)) {
           this._taskEdit.querySelector(`.card__btn--favorites`).classList.add(`card__btn--disabled`);
+          document.querySelector(`.filter__favorites-count`).textContent--;
         } else {
           this._taskEdit.querySelector(`.card__btn--favorites`).classList.remove(`card__btn--disabled`);
+          document.querySelector(`.filter__favorites-count`).textContent++;
         }
       });
     });
@@ -73,20 +92,18 @@ class TaskController {
           acc[it] = true;
           return acc;
         }, {
-          'Mo': false,
-          'Tu': false,
-          'We': false,
-          'Th': false,
-          'Fr': false,
-          'Sa': false,
-          'Su': false,
+          'mo': false,
+          'tu': false,
+          'we': false,
+          'th': false,
+          'fr': false,
+          'sa': false,
+          'su': false,
         }),
         tags: new Set(formData.getAll(`hashtag`)),
         color: formData.get(`color`),
-        /*
-        isFavorite: true,
-        isArchive: true,
-        */
+        isFavorite: this._taskEdit.querySelector(`.card__btn--favorites`).classList.contains(`card__btn--disabled`),
+        isArchive: this._taskEdit.querySelector(`.card__btn--archive`).classList.contains(`card__btn--disabled`),
       };
 
       this._onDataChange(entry, this._data);

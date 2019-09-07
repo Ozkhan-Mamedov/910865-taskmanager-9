@@ -7,13 +7,13 @@ class TaskEdit extends AbstractComponent {
    * @param {string} description
    * @param {number} dueDate
    * @param { {
-              'Mo': boolean,
-              'Tu': boolean,
-              'We': boolean,
-              'Th': boolean,
-              'Fr': boolean,
-              'Sa': boolean,
-              'Su': boolean,
+              'mo': boolean,
+              'tu': boolean,
+              'we': boolean,
+              'th': boolean,
+              'fr': boolean,
+              'sa': boolean,
+              'su': boolean,
             } } repeatingDays
    * @param {string} color
    * @param {boolean} isFavorite
@@ -101,12 +101,12 @@ class TaskEdit extends AbstractComponent {
         <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__control">
-              <button type="button" class="card__btn card__btn--archive ${this._isArchive ? `` : `card__btn--disabled`}">
+              <button type="button" class="card__btn card__btn--archive ${this._isArchive ? `card__btn--disabled` : ``}">
                 archive
               </button>
               <button
                 type="button"
-                class="card__btn card__btn--favorites ${this._isFavorite ? `` : `card__btn--disabled`}"
+                class="card__btn card__btn--favorites ${this._isFavorite ? `card__btn--disabled` : ``}"
               >
                 favorites
               </button>
@@ -142,6 +142,7 @@ class TaskEdit extends AbstractComponent {
                         type="text"
                         placeholder=""
                         name="date"
+                        data-date="${this._dueDate}"
                         value="${new Date(this._dueDate).getDate()} ${months[new Date(this._dueDate).getMonth()]} ${new Date(this._dueDate).toTimeString().slice(0, 5)} PM"
                       />
                     </label>
@@ -159,7 +160,7 @@ class TaskEdit extends AbstractComponent {
                         id="repeat-mo-4"
                         name="repeat"
                         value="mo" 
-                        ${this._repeatingDays[`Mo`] ? `checked` : ``}
+                        ${this._repeatingDays[`mo`] ? `checked` : ``}
                       />
                       <label class="card__repeat-day" for="repeat-mo-4"
                         >mo</label
@@ -170,7 +171,7 @@ class TaskEdit extends AbstractComponent {
                         id="repeat-tu-4"
                         name="repeat"
                         value="tu"
-                        ${this._repeatingDays[`Tu`] ? `checked` : ``}
+                        ${this._repeatingDays[`tu`] ? `checked` : ``}
                       />
                       <label class="card__repeat-day" for="repeat-tu-4"
                         >tu</label
@@ -181,7 +182,7 @@ class TaskEdit extends AbstractComponent {
                         id="repeat-we-4"
                         name="repeat"
                         value="we"
-                        ${this._repeatingDays[`We`] ? `checked` : ``}
+                        ${this._repeatingDays[`we`] ? `checked` : ``}
                       />
                       <label class="card__repeat-day" for="repeat-we-4"
                         >we</label
@@ -192,7 +193,7 @@ class TaskEdit extends AbstractComponent {
                         id="repeat-th-4"
                         name="repeat"
                         value="th"
-                        ${this._repeatingDays[`Th`] ? `checked` : ``}
+                        ${this._repeatingDays[`th`] ? `checked` : ``}
                       />
                       <label class="card__repeat-day" for="repeat-th-4"
                         >th</label
@@ -203,7 +204,7 @@ class TaskEdit extends AbstractComponent {
                         id="repeat-fr-4"
                         name="repeat"
                         value="fr"
-                        ${this._repeatingDays[`Fr`] ? `checked` : ``}
+                        ${this._repeatingDays[`fr`] ? `checked` : ``}
                       />
                       <label class="card__repeat-day" for="repeat-fr-4"
                         >fr</label
@@ -214,7 +215,7 @@ class TaskEdit extends AbstractComponent {
                         name="repeat"
                         value="sa"
                         id="repeat-sa-4"
-                        ${this._repeatingDays[`Sa`] ? `checked` : ``}
+                        ${this._repeatingDays[`sa`] ? `checked` : ``}
                       />
                       <label class="card__repeat-day" for="repeat-sa-4"
                         >sa</label
@@ -225,7 +226,7 @@ class TaskEdit extends AbstractComponent {
                         id="repeat-su-4"
                         name="repeat"
                         value="su"
-                        ${this._repeatingDays[`Su`] ? `checked` : ``}
+                        ${this._repeatingDays[`su`] ? `checked` : ``}
                       />
                       <label class="card__repeat-day" for="repeat-su-4"
                         >su</label

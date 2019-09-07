@@ -38,24 +38,24 @@ const getTagSet = () => {
 
 /**
  * @return {
- *           { Tu: boolean,
- *             Mo: boolean,
- *             Su: boolean,
- *             Th: boolean,
- *             Fr: boolean,
- *             We: boolean,
- *             Sa: boolean }
+ *           { tu: boolean,
+ *             mo: boolean,
+ *             su: boolean,
+ *             th: boolean,
+ *             fr: boolean,
+ *             we: boolean,
+ *             sa: boolean }
  *         }
  */
 const getRepeatingDays = () => {
   return {
-    'Mo': false,
-    'Tu': false,
-    'We': Boolean(Math.round(Math.random())),
-    'Th': false,
-    'Fr': false,
-    'Sa': false,
-    'Su': false,
+    'mo': false,
+    'tu': false,
+    'we': Boolean(Math.round(Math.random())),
+    'th': false,
+    'fr': false,
+    'sa': false,
+    'su': false,
   };
 };
 
@@ -144,8 +144,10 @@ const getQuantityNumber = (name, tasks) => {
         let isRepeated = false;
 
         for (let key in it.repeatingDays) {
-          if (it.repeatingDays[key] === true) {
-            isRepeated = true;
+          if (it.repeatingDays.hasOwnProperty(key)) {
+            if (it.repeatingDays[key] === true) {
+              isRepeated = true;
+            }
           }
         }
 

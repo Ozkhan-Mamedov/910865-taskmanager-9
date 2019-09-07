@@ -32,7 +32,7 @@ class BoardController {
    * @param {{
    * description: string,
    * dueDate: number,
-   * repeatingDays: {Tu: boolean, Mo: boolean, Su: boolean, Th: boolean, Fr: boolean, We: boolean, Sa: boolean},
+   * repeatingDays: {tu: boolean, mo: boolean, su: boolean, th: boolean, fr: boolean, we: boolean, sa: boolean},
    * isArchive: boolean,
    * color: string,
    * isFavourite: boolean,
@@ -45,13 +45,10 @@ class BoardController {
   }
 
   _onDataChange(newData, oldData) {
-    // console.log(newData);
     this._tasks[this._tasks.findIndex((it) => it === oldData)] = newData;
     document.querySelector(`.board__tasks`).innerHTML = ``;
     this._currentTasks = this._tasks.slice();
-    this._currentTasks.slice(0, DEFAULT_CARD_RENDER_NUMBER).forEach((it) => this._renderTask(it));// this._taskList.getElement().firstChild
-    // неверно записывается формат дата, повторяющиеся дни не попадают в изменение из-за того, что при клике не навешивается
-    // атрибут checked
+    this._currentTasks.slice(0, DEFAULT_CARD_RENDER_NUMBER).forEach((it) => this._renderTask(it));
     if (this._currentTasks !== 0 && document.querySelector(`.load-more`) === null) {
       this._renderLoadMoreButton();
     }
